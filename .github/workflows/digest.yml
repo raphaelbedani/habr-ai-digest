@@ -1,0 +1,33 @@
+name: Translate Habr Digest
+
+on:
+  schedule:
+    - cron: '0 5 * * *'   # 5am UTC daily — adjust to your timezone
+  workflow_dispatch:        # lets you trigger manually to test
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install -r requirements.txt
+
+      - run: python translate.py
+        env:
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/habr-ai-en.xml
+          git commit -m "Update digest" || echo "No changes"
+          git push
