@@ -1,0 +1,35 @@
+name: Daily Habr AI Digest
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9:00 AM UTC
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  translate-and-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run translation
+        env:
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+        run: python translate.py
+      
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/habr-ai-en.xml
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Daily: Update translated Habr AI digest" && git push)
