@@ -7,11 +7,11 @@ import sys
 # --- Config ---
 FEED_URL = "https://habr.com/ru/rss/hub/artificial_intelligence/"
 OPENROUTER_KEY = os.environ.get("OPENROUTER_KEY", "")
-MODEL = "qwen/qwen-32b"  # Correct Qwen 32B model ID
+MODEL = "mistral/mistral-7b-instruct"  # Fast and cost-effective
 OUTPUT_PATH = "docs/habr-ai-en.xml"
 PUBLIC_FEED_URL = "https://raphaelbedani.github.io/habr-ai-digest/habr-ai-en.xml"
 MAX_ITEMS = 15
-TIMEOUT = 60
+TIMEOUT = 30  # Shorter timeout for faster model
 
 
 def translate(text):
