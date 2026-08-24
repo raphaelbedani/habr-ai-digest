@@ -7,7 +7,7 @@ import sys
 # --- Config ---
 FEED_URL = "https://habr.com/ru/rss/hub/artificial_intelligence/"
 OPENROUTER_KEY = os.environ.get("OPENROUTER_KEY", "")
-MODEL = "meta-llama/llama-2-7b-chat:free"  # More reliable free model
+MODEL = "qwen/qwen-32b-vision"
 OUTPUT_PATH = "docs/habr-ai-en.xml"
 PUBLIC_FEED_URL = "https://raphaelbedani.github.io/habr-ai-digest/habr-ai-en.xml"
 MAX_ITEMS = 15
