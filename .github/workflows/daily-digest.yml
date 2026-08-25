@@ -5,6 +5,9 @@ on:
     - cron: '0 9 * * *'  # Daily at 9:00 AM UTC
   workflow_dispatch:  # Allow manual trigger
 
+permissions:
+  contents: write
+
 jobs:
   translate-and-publish:
     runs-on: ubuntu-latest
