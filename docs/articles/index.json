@@ -55,6 +55,14 @@
     "summary": "The AI landscape has recently undergone a significant paradigm shift. Previously, we discussed intelligent assistants automating narrow scenarios like documentation Q&A or support bots. Now, technology has advanced to a point where complex human actions can be automated using various planning tools, multi-step task execution, and more – all of which are now termed AI agents. Many companies are releasing their own solutions, and open-source options are also available. While there's a lot of hype around the topic, with many half-working prototypes, there are also scenarios where agents prove genuinely useful and are already helping solve business problems. Read more",
     "title": "AI Agents: What They Are, How They Work, and How Our Assistant's Agent Mode is Structured"
   },
+  "https://habr.com/ru/companies/basis/articles/1077922/?utm_campaign=1077922&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Thu, 03 Sep 2026 12:00:13 GMT",
+    "slug": "1077922",
+    "source_url": "https://habr.com/ru/companies/basis/articles/1077922/?utm_campaign=1077922&utm_source=habrahabr&utm_medium=rss",
+    "summary": "Can AI not only eliminate routine tasks but also drastically accelerate a developer's professional growth? For example, can it turn a junior into at least a mid-level developer in one evening? This was a, perhaps crazy, but a hypothesis, and we decided to hold an internal hackathon to test it in conditions close to real-world scenarios. Read more",
+    "title": "Not a Replacement, but a SuperAI-lity: What a Hackathon Gave Our Company"
+  },
   "https://habr.com/ru/companies/cloud_ru/articles/1077298/?utm_campaign=1077298&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
     "published": "Thu, 03 Sep 2026 08:16:53 GMT",
@@ -110,5 +118,13 @@
     "source_url": "https://habr.com/ru/companies/ru_mts/articles/1077194/?utm_campaign=1077194&utm_source=habrahabr&utm_medium=rss",
     "summary": "Hi! My name is Dmitry Gavrilov, and I'm the head of the analytics competence center at MWS. My team is integrating AI skills into the work of data analysts. We looked at a typical workday and realized that routine consumes up to 75% of an analyst's time. Can this be delegated to an AI agent without loss of quality? We tested this hypothesis on real tasks and got concrete results – I'm sharing them in this article. Read on",
     "title": "AI Agent to the Rescue: How We Automated Over 70% of Analyst Routine and Increased Team Efficiency"
+  },
+  "https://habr.com/ru/companies/svoi_ru/articles/1078124/?utm_campaign=1078124&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Thu, 03 Sep 2026 11:54:46 GMT",
+    "slug": "1078124",
+    "source_url": "https://habr.com/ru/companies/svoi_ru/articles/1078124/?utm_campaign=1078124&utm_source=habrahabr&utm_medium=rss",
+    "summary": "\"We are looking for a Junior Developer with 3+ years of experience\" – a meme that has stopped being funny. While the market debates whether neural networks will replace juniors and companies cut adaptation budgets, the junior's vicious cycle has only tightened. But what if we look at AI not as a killer of entry-level positions, but as a growth catalyst? I am a PR manager in IT, and Laboratory 2.0 is my favorite case. In this article, I analyze how our internal 3-month bootcamp turns juniors into mids and seniors, why we offer jobs from day one, and what our retention and turnover figures have actually looked like over the past 5 years. Read more",
+    "title": "Why does fintech need juniors when there's AI? A review of 5 years of our Laboratory 2.0 with mechanics, statistics, and results"
   }
 }
