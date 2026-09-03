@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choosing a UI Tool for Rapid Prototyping in AI Products: Open WebUI</title>
+  <meta name="description" content="When developing an AI product, we faced an unexpected challenge. Choosing an LLM turned out to be easier than choosing an interface for it. Ready-made AI chats are well-suited for dialogue with a single model, but they start to limit the product when it includes multiple agents, complex scenarios, a">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Choosing a UI Tool for Rapid Prototyping in AI Products: Open WebUI</h1>
+    <p>When developing an AI product, we faced an unexpected challenge. Choosing an LLM turned out to be easier than choosing an interface for it. Ready-made AI chats are well-suited for dialogue with a single model, but they start to limit the product when it includes multiple agents, complex scenarios, and intermediate work stages. In this article, we will describe the essence of the task, the requirements, and analyze Open WebUI. Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078008/?utm_campaign=1078008&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Thu, 03 Sep 2026 08:11:26 GMT
+    </p>
+  </header>
+  <main>
+<div><p>When developing an AI product, we faced an unexpected challenge. Choosing an LLM turned out to be easier than choosing an interface for it. Ready-made AI chats are well-suited for dialogue with a single model, but they start to limit the product when it includes multiple agents, complex scenarios, and intermediate work stages. In this article, we will describe the essence of the task, the requirements, and analyze Open WebUI.</p><p>The main goal of an MVP is to demonstrate the product concept and verify its viability. At this stage, it is important to focus on implementing core functionalities; the appearance is sometimes less important. However, in AI products, there is a nuance: even for an MVP, the interface often becomes part of the product's logic and future architecture.</p><p>If AI solutions used to be essentially a single chat where the user interacted with one neural network, modern solutions include a chain or graph of AI agents, each performing its task independently, sometimes interacting with the user. In this case, the UI becomes a full-fledged command center: system state, thought and work dynamics, tool calling, human-in-the-loop interaction points, and much more.</p><p>Therefore, the choice of a UI tool affects both prototyping speed and the final result, determining whether the user can organically work within the system. In this article, we will explain how we chose the frontend tool for the "Idea Bank" project.</p><h2>What is "Idea Bank"?</h2><p>"Idea Bank" is a multi-agent system responsible for analyzing and preparing employee ideas. An employee describes the problem they want to solve in a chatbot, submits their idea, and then it goes through multiple AI agents, each performing its assigned role:</p><ul><li><p><strong>Critic</strong> highlights weak points.</p></li><li><p><strong>Security Officer</strong> removes confidential information before the idea is passed to an external LLM.</p></li><li><p>And other agents.</p></li></ul><p>An AI agent is understood as an artificial intelligence-based system with a set of tools to solve the user's task.</p><p>While working on "Idea Bank," we encountered the need to quickly implement a frontend to demonstrate the service's functionality.</p><h2>Technical Implementation</h2><p>For the implementation of "Idea Bank," we used <strong>LangGraph</strong>, which allows representing agent logic as a graph: agent tools = nodes connected by edges forming the agent's pipeline, and each agent = a node in the overall orchestrator graph.</p><p>"Idea Bank" implies close user interaction as the idea evolves. We had a specific vision: we needed a familiar and intuitive interface: a chatbot with custom component integration.</p><p><strong>What non-standard components were required:</strong></p><ul><li><p><strong>Boards.</strong> At the stage of idea analysis by domain expert agents, each of them had to transfer their opinion to a board where the user could read them all, compare them, and even make their own edits. After the evaluation stage, the boards remained in the chat for context.</p></li><li><p><strong>Graph Visualization.</strong> The full orchestrator graph pipeline takes 15 to 20 minutes to execute. To prevent the user from thinking the service is frozen, we wanted to display the progress of all agent work stages.</p></li></ul><p>A standard chat interface works well when the entire result can be presented as a single stream of messages. However, if the system needs to show process states, pause for action confirmation, display tool results as interactive components, and maintain work context, the UI layer architecture is also important.</p><h2>Tool Requirements</h2><p>Based on the specifics of the task, we formulated the following requirements:</p><ul><li><p>Open-source solution.</p></li><li><p>Ease of integration into an already created system.</p></li><li><p>Possibility of quick and convenient customization.</p></li><li><p>Professional and understandable interface.</p></li><li><p>Support for multi-step interaction.</p></li><li><p>Ability to display not only model responses but also intermediate states.</p></li><li><p>Suitability not only for demos but also for further development.</p></li></ul><p>For internal MVPs, one can afford a temporary interface. But if the MVP shows good results, the business almost always wants to quickly move to a pilot with real users, and then to industrial implementation. An overly rigid UI framework might save time at the start but lead to expensive refactoring within a few weeks.</p><h2>What We Tried</h2><p>Based on the requirements, the list was narrowed down to two options:</p><ul><li><p><strong>Open WebUI</strong> — a self-contained open-source platform with a ready-made web interface for working with models, documents, tools, and knowledge bases.</p></li><li><p><strong>Assistant-UI</strong> — an open TypeScript/React library that provides production-ready components and tools for building a chat, but assumes you assemble the product interface within your own application.</p></li></ul><p>These are two tools for different scenarios. We compared them not directly, but by their convenience for development and the user, and the resulting business outcome.</p><h2>Open WebUI</h2><p>It was Open WebUI that we used for the first version of "Idea Bank" with a minimal architecture, and at first, it seemed like the best choice.</p><figure><img alt=
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

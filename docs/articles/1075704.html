@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Four Copies of the Project and One Lab Monster. How to Teach an AI Agent to Write Code According to Design System Rules</title>
+  <meta name="description" content="The screen looked almost alive. The model assembled a page with cards, statuses, and badges in minutes. It seemed I could put my feet up and finish my coffee. But then the code reached review. Beneath the neat interface were styled.div, HEX colors, and props that never existed in our design system. ">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Four Copies of the Project and One Lab Monster. How to Teach an AI Agent to Write Code According to Design System Rules</h1>
+    <p>The screen looked almost alive. The model assembled a page with cards, statuses, and badges in minutes. It seemed I could put my feet up and finish my coffee. But then the code reached review. Beneath the neat interface were styled.div, HEX colors, and props that never existed in our design system. The result was that very lab monster, wheezing but unable to live in the project. So, I conducted an experiment with one frontend task, one model, and four identical copies of the project. In the first case, I left the agent without hints; in the second, I gave it a skill with project rules; in the third, I connected MCP with design system documentation; and in the fourth, I combined everything. I wanted to find out which combination would turn code generation into an elixir of speed, and which would spawn another monster unable to survive an encounter with typecheck and build. Read on.</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/companies/raiffeisenbank/articles/1075704/?utm_campaign=1075704&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Thu, 03 Sep 2026 08:59:50 GMT
+    </p>
+  </header>
+  <main>
+<div><p>The screen looked almost alive. The model assembled a page with cards, statuses, and badges in minutes. It seemed I could put my feet up and finish my coffee. But then the code reached review. Beneath the neat interface were <code>styled.div</code>, HEX colors, and props that never existed in our design system. The result was that very lab monster, wheezing but unable to live in the project.</p><p>So, I conducted an experiment with one frontend task, one model, and four identical copies of the project. In the first case, I left the agent without hints; in the second, I gave it a skill with project rules; in the third, I connected MCP with design system documentation; and in the fourth, I combined everything. I wanted to find out which combination would turn code generation into an elixir of speed, and which would spawn another monster unable to survive an encounter with typecheck and build.</p><p>Hello, Habr! My name is Egor Shtab, I am a Fullstack Developer at Raiffeisen Bank. In the compliance team, I work on frontend development with React, backend development with <a href="http://ASP.NET">ASP.NET</a>, and I am also involved in a new strategic bank initiative where I am creating a harness for the project. I experiment a lot with AI tools for development. At some point, I became curious if it's possible to teach an agent not just to generate working interfaces, but to write code as if it already knows the rules of my project and design system. I will tell you about this experiment.</p><h2>Where the Model's General Knowledge Ends</h2><p>The problem isn't that the model doesn't understand how an interface is structured. It knows that a container can be made with flex, a status can be shown with a badge, and data can be laid out in cards. But general UI patterns don't reveal the contract of a specific design system.</p><p>At the bank, we use FCC UI. This is a UI kit for React with primitives, cards, modals, drawers, and controls of all kinds. For example, a flex container in FCC looks like this:</p><p><code>&lt;Flex direction="row" gap="s2" alignItems="center"&gt;…&lt;/Flex&gt;</code></p><p>Here, <code>direction</code> controls <code>flex-direction</code>, <code>alignItems</code> controls <code>align-items</code>, and <code>gap</code> retains its familiar meaning. A model without context will likely assemble the same container on its own:</p><pre><code>const StyledContainer = styled.div`
+
+ display: flex;
+
+ flex-direction: row;
+
+ align-items: center;
+
+`;</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>If the stars align in a particularly peculiar way, we get this result.</p><pre><code>&lt;div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}&gt;
+  The stars aligned
+&lt;/div&gt;
+&lt;div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}&gt;
+  And we got this result
+&lt;/div&gt;</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>The same happens with colors, sizes, icons, and component composition. The model might recall a similar API from another library and confidently insert it into FCC.</p><p>In the best-case scenario, the agent will find TypeScript declarations in <code>node_modules</code> and try to reconstruct the contract from them. Types will suggest which components exist and what props they accept. But they don't always reveal which component to choose, how to compose it, and what pattern is currently considered correct in the project. Such code might work, but it doesn't adhere to the contract and agreements of a specific project.</p><h2>Giving the Agent Access to the FCC Contract</h2><p>To avoid discussing the problem abstractly, I took a test project with two packages. <code>@fcc/ui</code> contains interface components, and <code>@fcc/icons</code> contains design system icons.</p><p>For example, a task might require displaying a product category and status in badges. It's not enough to understand that a green badge is needed. The agent needs to know that in FCC, <code>Badge</code> has a <code>color</code> prop with a fixed set of values and a <code>semanticColor</code> prop with semantic tokens. Then, it needs to select the existing component, the correct prop, and an allowed value.</p><p>I provided access to the up-to-date contract through the design system's MCP server, <code>docs-context</code>. Through it, the model can:</p><ul><li><p>find an existing component using <code>list_components</code>;</p></li><li><p>get its props and allowed values via <code>get_component_props</code>;</p></li><li><p>view real usage examples in <code>get_component_stories</code>;</p></li><li><p>select an icon via <code>get_icons</code>;</p></li><li><p>find a semantic color token using <code>get_colors</code>.</p></li></ul><p>In practice, the agent first finds a suitable component, then checks its API, and only after that looks at composition examples. Unlike a regular documentation search, MCP provides structured facts about the contract. Models don't have to guess which components exist, what values are allowed, and what tokens are available.</p><p>And so, I solved the problem... Or did I?</p><h2>Why an MCP Skill?</h2><p>If the model can ask what components and props exist, why add another layer?</p><p>I created a skill that pre-sets the model's principles for working with the design system:</p><ul><li><p>use FCC components and icons;</p></li><li><p>do not invent component, prop, or token names;</p></li><li><p>do not use third-party UI libraries;</p></li><li><p>do not assemble visual primitives from scratch if FCC already has a suitable component;</p></li><li><p>do not write inline styles;</p></li><li><p>do not use HEX colors instead of tokens;</p></li><li><p>refer to MCP when needing to check a component, prop, icon, or color.</p></li></ul><p>The skill does not store a list of components or duplicate MCP. It sets the intention and boundaries of acceptable behavior. But intention alone is not enough. Even knowing that props cannot be invented, the model can still make mistakes. The skill requires checking the contract, but doesn't provide the exact prop name itself.</p><p>In all four modes, the task remained the same. For each, I used a separate project copy and a new model session. All data, products, and conditions are fictional and do not represent an actual offering.</p><figure><img alt=
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>
