@@ -10,6 +10,7 @@ Automatically translates the latest articles from Habr's Artificial Intelligence
 - Preserves links, images, HTML structure, and code blocks.
 - Writes each translation to `docs/articles/<article-id>.html`.
 - Publishes the latest translated items to `docs/habr-ai-en.xml`.
+- Lists every cached full translation in a cumulative table on the landing page.
 - Reuses cached translations, so existing articles do not consume another Gemini request.
 - Runs once per day at 09:00 UTC and can also be triggered manually.
 
