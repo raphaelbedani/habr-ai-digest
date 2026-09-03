@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How We Taught ML to Predict Pump Failure 60 Days in Advance and Discovered We Were Always Fixing the Wrong Thing (Part 1)</title>
+  <meta name="description" content="A pump at an oil refinery broke down every three months. Repair crews replaced bearings, but the problem persisted. We proposed not just monitoring vibration, but finding the hidden cause in the data. The result exceeded expectations: 60 days of advance warning and an unexpected culprit. We explain ">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>How We Taught ML to Predict Pump Failure 60 Days in Advance and Discovered We Were Always Fixing the Wrong Thing (Part 1)</h1>
+    <p>A pump at an oil refinery broke down every three months. Repair crews replaced bearings, but the problem persisted. We proposed not just monitoring vibration, but finding the hidden cause in the data. The result exceeded expectations: 60 days of advance warning and an unexpected culprit. We explain how it happened and why the model is only 20% of the success. Learn why they were fixing the wrong thing.</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/companies/datasapience/articles/1078104/?utm_campaign=1078104&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Thu, 03 Sep 2026 11:30:11 GMT
+    </p>
+  </header>
+  <main>
+<div><p><em>A story about how we battled "digital blindness," fragmented data, and distrust in ML to build a predictive analytics system for a real oil refinery. Part 1 of 2.</em></p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c84/7c6/e0a/c847c6e0a3ee551b02e92db35bf55efb.png"/></figure><p>Hello, Habr! My name is <strong>Sergey Mikhailov</strong>, and I am an industry expert at the vendor <a href="https://habr.com/ru/companies/datasapience/articles/"><strong>Data Sapience</strong></a>. My work lies at the intersection of two worlds: I translate industry "wishes" into the language of Data Science and vice versa, and therefore I see how predictive analytics projects are born and develop.<br/><br/>This is the first of two articles about how we built a predictive analytics system for a real oil refinery. I'll preface this by saying: we assembled this case largely "by hand" and using custom connectors, and during the work, it became clear what tool was truly needed here. All the described functionality is today covered by our platform <a href="https://datasapience.ru/platforms/industrialsolutions/industrial-ocean"><strong>Industrial Ocean</strong></a>, and throughout the text, I will point out where it addresses specific pain points. Let's go.</p><h4>Instead of an Introduction: A Conversation in the Control Room</h4><p>— The pump is down again. For the third time in six months.</p><p>The chief mechanic wearily runs a hand over his face. On the plasma screen is a process diagram of the unit, and on the adjacent monitor is a table with sensor readings. Everything is as usual: the data is there, but it's impossible to understand what exactly went wrong. The bearings overheated. Again. The causes are unclear. Repairs are reactive. Downtime means production losses. Last year, more was spent on repairing this pump than on planned maintenance for the entire shop.</p><p>— We were thinking, — I say. — Give us access to the tag archives for the last two years. We'll try to find patterns.</p><p>In response, only a skeptical look. They've heard such promises at the plant many times before. There were (and are) vibration monitoring systems, and attempts to implement "smart" maintenance. But it all came down to one thing: a sensor showed that vibration had increased, but no one could explain the <em>reason</em>. Process engineers shrugged, repair crews replaced bearings, and three months later, everything repeated.</p><p>But they still didn't give access to the data. Too complicated. Too many systems. Too much bureaucracy.</p><p>Sound familiar? Welcome to the world where industry is trying to make friends with Data Science.</p><h4>The Four Horsemen of the Apocalypse in Industrial ML</h4><p>When we at Data Sapience began delving into predictive analytics tasks for the oil and gas industry, we encountered fundamental problems that repeated from plant to plant, from company to company.</p><p><strong>The First Horseman – Pestilence</strong> (symptoms of the disease spread across sources)<br/>Data from ACS TP sensors live in one world (OPC servers, SCADA), operational MES tasks are in another, and economic indicators from ERP are in a third. There is no unified picture. A process engineer cannot see how raw material quality affects pump vibration after three hours of operation. A mechanic doesn't understand that a pressure change in one circuit signals problems in a neighboring one. Everyone looks at their fragment of the puzzle.</p><p>At one facility, we counted <strong>149 tags related to a single compressor</strong>. But they were scattered across different systems. One part was in the PI System, another in SCADA, and a third in Excel spreadsheets held by process engineers. Some tags had strange names that only one engineer, who left last year, understood. And some tags weren't collected at all: they simply weren't fed into a unified system.</p><p><strong>The Second Horseman – War</strong> (with accidents)<strong> </strong><br/>Production culture is often built on the principle of "firefighting." A breakdown occurs – repair crews are immediately called. Off-spec product is released – we deal with it after the fact. Unit downtime can cost hundreds of thousands of rubles per hour. But instead of preventing incidents, there's only chronic elimination of consequences. The problem here is not an unwillingness to prevent accidents, but a lack of tools that would show in advance: "Listen, your pump will fail in 60 days. The cause is in these seals. Deal with it now, and everything will be fine."
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The &quot;Archangel&quot; Architecture: How to Deploy an On-Premise Multi-Agent AI System in an Isolated Environment</title>
+  <meta name="description" content="Recently, businesses have been increasingly looking towards Agentic AI – systems where neural networks don&#x27;t just respond to prompts in a chat but act as autonomous digital employees. When it comes to large enterprises, compliance, and working with sensitive data (e.g., legal or financial docum">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The &quot;Archangel&quot; Architecture: How to Deploy an On-Premise Multi-Agent AI System in an Isolated Environment</h1>
+    <p>Recently, businesses have been increasingly looking towards Agentic AI – systems where neural networks don&#x27;t just respond to prompts in a chat but act as autonomous digital employees. When it comes to large enterprises, compliance, and working with sensitive data (e.g., legal or financial documents), cloud APIs from OpenAI or Anthropic immediately become a showstopper. Security demands complete isolation. In this article, I will technically break down how we designed and implemented the &quot;Archangel&quot; On-Premise multi-agent AI platform, capable of operating without external internet access. 1. Delivery and Infrastructure Layer: Full On-Premise in Kubernetes For large customers, it is critically important that software is deployed within their own isolated perimeter (On-Premise) and managed using tools familiar to their Ops teams. We abandoned complex proprietary installers in favor of containerization. We deliver the &quot;Archangel&quot; platform as isolated Helm charts for the customer&#x27;s Kubernetes cluster. This ensures predictable deployment and easy scaling under load. Isolation is provided not by the packaging itself, but by network policies and the absence of an external route – more on this below. How it works at the infrastructure level: - Air-gapped environment. All platform&#x27;s base Docker images and local LLM weights (e.g., Llama or Mistral families, adapted for our tasks) are mirrored to the customer&#x27;s internal private registry – Harbor or Nexus. - State and Storage. Within the Helm charts, StatefulSets are described for databases and message brokers, which can use either internal K8s storage (via CSI) or connect to existing PostgreSQL or Redis clusters within the customer&#x27;s environment. Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078100/?utm_campaign=1078100&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Thu, 03 Sep 2026 11:03:39 GMT
+    </p>
+  </header>
+  <main>
+<div><p>Recently, businesses have been increasingly looking towards Agentic AI – systems where neural networks don't just respond to prompts in a chat but act as autonomous digital employees.</p><p>When it comes to large enterprises, compliance, and working with sensitive data (e.g., legal or financial documents), cloud APIs from OpenAI or Anthropic immediately become a showstopper. Security demands complete isolation.</p><p>In this article, I will technically break down how we designed and implemented the "Archangel" On-Premise multi-agent AI platform, capable of operating without external internet access.</p><p><strong>1. Delivery and Infrastructure Layer: Full On-Premise in Kubernetes</strong></p><p>For large customers, it is critically important that software is deployed within their own isolated perimeter (On-Premise) and managed using tools familiar to their Ops teams. We abandoned complex proprietary installers in favor of containerization.<br/></p><p>We deliver the "Archangel" platform as isolated Helm charts for the customer's Kubernetes cluster. This ensures predictable deployment and easy scaling under load. Isolation is provided not by the packaging itself, but by network policies and the absence of an external route – more on this below.<br/></p><p>How it works at the infrastructure level:</p><p>- <strong>Air-gapped environment.</strong> All platform's base Docker images and local LLM weights (e.g., Llama or Mistral families, adapted for our tasks) are mirrored to the customer's internal private registry – Harbor or Nexus.</p><p>- <strong>State and Storage.</strong> Within the Helm charts, StatefulSets are described for databases and message brokers, which can use either internal K8s storage (via CSI) or connect to existing PostgreSQL or Redis clusters within the customer's environment.</p><p>- <strong>Network Policies.</strong> At the Kubernetes level, any outbound requests to the external network are strictly blocked. An important caveat: policies require a CNI with support for them (Calico, Cilium) – on plain Flannel, the manifest will apply and do nothing; this should be verified with a test. All operations occur strictly within the private environment.</p><p><br/><strong>2. Agent Orchestration: How AI Employees Communicate with Each Other</strong></p><p>The essence of Agentic AI lies in the division of responsibilities. A single universal agent cannot effectively solve complex business tasks without hallucinations. In "Archangel," the task is broken down into subtasks performed by specialized AI agents communicating through an asynchronous data bus.</p><p>We built the orchestration based on the Event-Driven Architecture (EDA) pattern. The role of the central nervous system is performed by an internal data bus (Event Bus) deployed within the cluster.</p><p><strong>End-to-End Example of a Multi-Agent System in Operation</strong></p><p>Let's consider a real business case: a large company uploads a complex contract project to the system for risk analysis.</p><p>1. <strong>Ingestion Agent.</strong> Parses the document, cleans the text from noise, and sends a <code>document.parsed</code> event to the data bus.</p><p>2. <strong>Legal Agent.</strong> Subscribes to this event, takes the text, performs semantic analysis, and finds a hidden legal conflict (e.g., incorrectly described penalty clauses). It publishes a structured message <code>collision.detected</code> to the Event Bus.</p><p>3. <strong>Finance Agent.</strong> Reacts to the collision event. Its task is to calculate the potential financial risk in monetary terms based on the company's internal historical data. It performs the calculation and sends a <code>risk.calculated</code> event.</p><p>4. <strong>Integration Agent.</strong> Collects artifacts from the previous agents, aggregates the data, and forms the final strictly validated JSON response for the customer's ERP system (or CRM systems like 1C / Bitrix24).</p><p>Thanks to this approach, agents do not block each other, and the system itself scales horizontally easily: if the number of legal documents increases, Kubernetes simply spins up additional pods with the legal agent.</p><p>3. Security of Vectors and RAG: Local Knowledge Base</p><p>To reduce hallucinations and ensure AI agents operate with the company's current context (regulations, policies, document archives), we use RAG (Retrieval-Augmented Generation) technology.</p><p>In cloud solutions, your documents are sent to third-party services for vectorization and storage. In "Archangel," this process is completely localized.</p><p>Vector Layer Security Architecture:</p><p>- <strong>Local Embedding Models.</strong> Text is converted into a vector representation (numerical arrays reflecting the meaning of phrases) on dedicated GPU nodes within the same Kubernetes cluster using lightweight open-source models (e.g., based on the BERT architecture). Not a single byte of text leaves the environment.</p><p>- <strong>Isolated Vector Storage.</strong> Generated vectors of regulations and internal company knowledge are stored in a specialized vector database (e.g., pgvector, Qdrant, or Milvus) deployed nearby.</p><p>- <strong>No External Synchronization.</strong> The knowledge base resides within the same isolated environment and is fundamentally not synchronized with cloud providers. Knowledge base updates occur locally: when the internal compliance department uploads a new regulation, the system locally re-indexes it and updates the vector indexes.</p><p>The AI agent accesses the company's "memory" through a fast internal API request to the vector DB, retrieves the necessary context, passes it to the local LLM, and provides the result with links to specific sources – the final decision remains with the lawyer.</p><p><strong>Conclusion</strong></p><p>Creating Agentic AI for the Enterprise is primarily an infrastructure and security challenge, and only then a Data Science one. By wrapping the platform in Helm charts, configuring event-driven agent interaction via an Event Bus, and isolating vector databases, we have created a system that operates predictably and does not require a single outgoing packet beyond the perimeter. I won't call it absolutely secure – such things don't exist – but the attack surface here is fundamentally different from cloud integration, and this is precisely what customers from regulated industries pay for.<br/></p><p>If you have any questions about the architecture of distributed AI systems or integrating local LLMs with corporate data buses, I'd be happy to discuss them in the comments!<br/></p></div>
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>
