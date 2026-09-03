@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import time
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -376,24 +377,75 @@ def render_article_page(title, summary, body_html, source_url, published):
 """
 
 
-def render_index_page(feed_items):
+def published_sort_key(value):
+    try:
+        return parsedate_to_datetime(value).timestamp()
+    except (TypeError, ValueError, OverflowError):
+        return 0
+
+
+def published_date(value):
+    try:
+        published = parsedate_to_datetime(value)
+        return published.strftime("%Y-%m-%d"), published.isoformat()
+    except (TypeError, ValueError, OverflowError):
+        return value or "Unknown", ""
+
+
+def build_archive_items(cache):
+    items_by_slug = {}
+
+    for source_url, cached in cache.items():
+        if not isinstance(cached, dict):
+            continue
+
+        slug = str(cached.get("slug") or article_slug(source_url))
+        if not (ARTICLES_DIR / f"{slug}.html").exists():
+            continue
+
+        item = {
+            "slug": slug,
+            "title": cached.get("title") or "Untitled",
+            "translated_url": f"{PUBLIC_BASE_URL}/articles/{slug}.html",
+            "source_url": cached.get("source_url") or source_url,
+            "published": cached.get("published") or "",
+        }
+
+        previous = items_by_slug.get(slug)
+        if previous is None or published_sort_key(item["published"]) > published_sort_key(
+            previous["published"]
+        ):
+            items_by_slug[slug] = item
+
+    return sorted(
+        items_by_slug.values(),
+        key=lambda item: (published_sort_key(item["published"]), item["slug"]),
+        reverse=True,
+    )
+
+
+def render_index_page(archive_items):
     rows = []
-    for item in feed_items:
+    for item in archive_items:
         title = html.escape(item["title"] or "Untitled")
-        summary = html.escape(item["summary"] or "")
         translated_url = html.escape(item["translated_url"], quote=True)
         source_url = html.escape(item["source_url"], quote=True)
-        published = html.escape(item["published"] or "")
+        date_label, date_value = published_date(item["published"])
+        date_label = html.escape(date_label)
+        date_value = html.escape(date_value, quote=True)
 
         rows.append(
-            f"""<article>
-  <h2><a href="{translated_url}">{title}</a></h2>
-  <p>{summary}</p>
-  <p class="meta">{published} · <a href="{source_url}">Russian original</a></p>
-</article>"""
+            f"""<tr>
+  <td><time datetime="{date_value}">{date_label}</time></td>
+  <td><a href="{translated_url}">{title}</a></td>
+  <td><a class="read-link" href="{translated_url}">Read full English</a></td>
+  <td><a href="{source_url}">Russian original</a></td>
+</tr>"""
         )
 
-    articles = "\n".join(rows)
+    article_rows = "\n".join(rows)
+    if not article_rows:
+        article_rows = '<tr><td colspan="4">No translated articles yet.</td></tr>'
 
     return f"""<!doctype html>
 <html lang="en">
@@ -405,7 +457,7 @@ def render_index_page(feed_items):
     body {{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
-      max-width: 860px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 32px 20px 64px;
       color: #1f2328;
@@ -415,13 +467,29 @@ def render_index_page(feed_items):
       margin-bottom: 28px;
       padding-bottom: 20px;
     }}
-    article {{
-      border-bottom: 1px solid #d8dee4;
-      padding: 12px 0 24px;
+    .table-wrap {{
+      overflow-x: auto;
     }}
-    .meta {{
-      color: #57606a;
-      font-size: 0.9rem;
+    table {{
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }}
+    th, td {{
+      border-bottom: 1px solid #d8dee4;
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+    }}
+    th {{
+      background: #f6f8fa;
+    }}
+    th:first-child, td:first-child {{
+      white-space: nowrap;
+    }}
+    .read-link {{
+      white-space: nowrap;
+      font-weight: 600;
     }}
   </style>
 </head>
@@ -433,9 +501,24 @@ def render_index_page(feed_items):
       Habr's Artificial Intelligence hub, generated with Gemini 2.5 Flash-Lite.
     </p>
     <p><a href="habr-ai-en.xml">Subscribe to the RSS feed</a></p>
+    <p>{len(archive_items)} full English translation(s) in the archive.</p>
   </header>
   <main>
-{articles}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Published</th>
+            <th scope="col">Article</th>
+            <th scope="col">Full English</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+{article_rows}
+        </tbody>
+      </table>
+    </div>
   </main>
 </body>
 </html>
@@ -571,11 +654,13 @@ def main():
             fe.pubDate(item["published"])
 
     fg.rss_file(str(OUTPUT_PATH))
-    INDEX_PATH.write_text(render_index_page(feed_items), encoding="utf-8")
+    archive_items = build_archive_items(cache)
+    INDEX_PATH.write_text(render_index_page(archive_items), encoding="utf-8")
     save_cache(cache)
 
     print(
         f"\nSuccess: wrote {len(feed_items)} feed items to {OUTPUT_PATH}; "
+        f"archive lists {len(archive_items)} total translated articles; "
         f"Gemini API calls attempted this run: {api_calls}"
     )
 

@@ -8,7 +8,7 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
-      max-width: 860px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 32px 20px 64px;
       color: #1f2328;
@@ -18,13 +18,29 @@
       margin-bottom: 28px;
       padding-bottom: 20px;
     }
-    article {
-      border-bottom: 1px solid #d8dee4;
-      padding: 12px 0 24px;
+    .table-wrap {
+      overflow-x: auto;
     }
-    .meta {
-      color: #57606a;
-      font-size: 0.9rem;
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-bottom: 1px solid #d8dee4;
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f6f8fa;
+    }
+    th:first-child, td:first-child {
+      white-space: nowrap;
+    }
+    .read-link {
+      white-space: nowrap;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -36,78 +52,119 @@
       Habr's Artificial Intelligence hub, generated with Gemini 2.5 Flash-Lite.
     </p>
     <p><a href="habr-ai-en.xml">Subscribe to the RSS feed</a></p>
+    <p>16 full English translation(s) in the archive.</p>
   </header>
   <main>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077922.html">Not a Replacement, but a SuperAI-lity: What a Hackathon Gave Our Company</a></h2>
-  <p>Can AI not only eliminate routine tasks but also drastically accelerate a developer&#x27;s professional growth? For example, can it turn a junior into at least a mid-level developer in one evening? This was a, perhaps crazy, but a hypothesis, and we decided to hold an internal hackathon to test it in conditions close to real-world scenarios. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 12:00:13 GMT · <a href="https://habr.com/ru/companies/basis/articles/1077922/?utm_campaign=1077922&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078124.html">Why does fintech need juniors when there&#x27;s AI? A review of 5 years of our Laboratory 2.0 with mechanics, statistics, and results</a></h2>
-  <p>&quot;We are looking for a Junior Developer with 3+ years of experience&quot; – a meme that has stopped being funny. While the market debates whether neural networks will replace juniors and companies cut adaptation budgets, the junior&#x27;s vicious cycle has only tightened. But what if we look at AI not as a killer of entry-level positions, but as a growth catalyst? I am a PR manager in IT, and Laboratory 2.0 is my favorite case. In this article, I analyze how our internal 3-month bootcamp turns juniors into mids and seniors, why we offer jobs from day one, and what our retention and turnover figures have actually looked like over the past 5 years. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 11:54:46 GMT · <a href="https://habr.com/ru/companies/svoi_ru/articles/1078124/?utm_campaign=1078124&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078104.html">How We Taught ML to Predict Pump Failure 60 Days in Advance and Discovered We Were Always Fixing the Wrong Thing (Part 1)</a></h2>
-  <p>A pump at an oil refinery broke down every three months. Repair crews replaced bearings, but the problem persisted. We proposed not just monitoring vibration, but finding the hidden cause in the data. The result exceeded expectations: 60 days of advance warning and an unexpected culprit. We explain how it happened and why the model is only 20% of the success. Learn why they were fixing the wrong thing.</p>
-  <p class="meta">Thu, 03 Sep 2026 11:30:11 GMT · <a href="https://habr.com/ru/companies/datasapience/articles/1078104/?utm_campaign=1078104&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078100.html">The &quot;Archangel&quot; Architecture: How to Deploy an On-Premise Multi-Agent AI System in an Isolated Environment</a></h2>
-  <p>Recently, businesses have been increasingly looking towards Agentic AI – systems where neural networks don&#x27;t just respond to prompts in a chat but act as autonomous digital employees. When it comes to large enterprises, compliance, and working with sensitive data (e.g., legal or financial documents), cloud APIs from OpenAI or Anthropic immediately become a showstopper. Security demands complete isolation. In this article, I will technically break down how we designed and implemented the &quot;Archangel&quot; On-Premise multi-agent AI platform, capable of operating without external internet access. 1. Delivery and Infrastructure Layer: Full On-Premise in Kubernetes For large customers, it is critically important that software is deployed within their own isolated perimeter (On-Premise) and managed using tools familiar to their Ops teams. We abandoned complex proprietary installers in favor of containerization. We deliver the &quot;Archangel&quot; platform as isolated Helm charts for the customer&#x27;s Kubernetes cluster. This ensures predictable deployment and easy scaling under load. Isolation is provided not by the packaging itself, but by network policies and the absence of an external route – more on this below. How it works at the infrastructure level: - Air-gapped environment. All platform&#x27;s base Docker images and local LLM weights (e.g., Llama or Mistral families, adapted for our tasks) are mirrored to the customer&#x27;s internal private registry – Harbor or Nexus. - State and Storage. Within the Helm charts, StatefulSets are described for databases and message brokers, which can use either internal K8s storage (via CSI) or connect to existing PostgreSQL or Redis clusters within the customer&#x27;s environment. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 11:03:39 GMT · <a href="https://habr.com/ru/articles/1078100/?utm_campaign=1078100&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078040.html">IDP and RPA will disappear as classes: what will happen to corporate automation</a></h2>
-  <p>We at Content AI are developing the ContentCapture intelligent document processing platform. And we believe that IDP and RPA as independent classes will disappear within five years. This may sound like self-negation, but it&#x27;s good news for the market. Below, we explain why we&#x27;ve reached this conclusion and what it means for those currently choosing an IDP solution or automating document workflows. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 10:44:52 GMT · <a href="https://habr.com/ru/companies/contentai/articles/1078040/?utm_campaign=1078040&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077944.html">Can AI Port an App to Aurora OS? An Experiment with Mattermost and RuStore Publication</a></h2>
-  <p>Hello, this is the Aurora OS team. We have a problem that is not usually discussed in vendor blogs, but without it, this whole story makes no sense. We regularly hear the same thing about Aurora: the platform is good, but there are few apps, and porting ready-made Android apps to it is difficult and expensive. A pet project is fine. A corporate application is also fine: we have many of them, they just live within closed environments, and you don&#x27;t see them. But a mass-market application that needs an audience of millions to exist seems doomed: no one will rewrite a million lines of legacy code for a new platform. The conversation usually boils down to the same phrase: everything we have is native. Kotlin, Swift, years of accumulated code, and rewriting it is long and expensive. Not everyone has cross-platform. For those who do, we&#x27;ve long had an answer: Flutter for Aurora is officially supported, Compose Multiplatform is too, and such teams migrate without drama. But for everyone else, until recently, we could only offer sympathy. Now, in the era of AI, a tool more powerful than any SDK has emerged, and it would be strange not to try it. Therefore, we took someone else&#x27;s large application, invited an external expert whom we do not control in any way, and agreed to publish the result regardless of how it turns out. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 10:04:20 GMT · <a href="https://habr.com/ru/companies/rostelecom/articles/1077944/?utm_campaign=1077944&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078038.html">One, the Best, or All Together? Seven Bugs, Four Fixers, and Seven Assemblers</a></h2>
-  <p>One broken bash script. Seven real bugs—from cosmetic (outdated filenames in comments) to fatal: a summary table that always shows zeros, no matter what actually happens. Four models fix this script blindly, independently, unaware of what the other three are doing. Then, seven more models receive all four finished fixes as input and one task: assemble the best from them. Spoiler alert—just enough to not spoil the intrigue: at the start, the models diverge much more than one might expect. No single model found everything. And their blind spots don&#x27;t overlap. Therefore, the experiment is worth conducting rather than just discussing theoretically. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 09:24:20 GMT · <a href="https://habr.com/ru/articles/1078038/?utm_campaign=1078038&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078032.html">&quot;Anime Factory&quot; Opened: Releasing the Code for a Pipeline That Cuts Episodes into Shorts Itself</a></h2>
-  <p>Recently, I&#x27;ve written three articles about a system that turns long videos into vertical clips: a general overview of the &quot;anime factory&quot;, a breakdown of a virtual camera with face tracking, and a story about why the &quot;transcript + LLM&quot; combination almost always yields garbage. The comment that was repeated under all three was the same: &quot;show the code.&quot; Here it is. → github.com/ialakey/shorts-factory This is a showcase branch of a large private project: an MVP that retains the full path &quot;take a long video → get a ready-made vertical clip&quot;, with everything else cut out. Below is what&#x27;s inside, how the code relates to the three previous articles, and what had to be thrown out. Take a look behind the scenes.</p>
-  <p class="meta">Thu, 03 Sep 2026 09:12:54 GMT · <a href="https://habr.com/ru/articles/1078032/?utm_campaign=1078032&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078030.html">Skynet or Scamnet? How Corporations Sold Us a Fantasy of &quot;Artificial Intelligence&quot; for Billions</a></h2>
-  <p>Two millennials who sold the world $850 billion worth of neural networks disguised as &quot;AI&quot; are looking at you from the cover of Time magazine. They try to look friendly, but honestly, it&#x27;s the uncanny valley effect. The caption &quot;TRUST US&quot; in huge letters looks like a mockery, but no, they are serious. In the article under the cover, Altman and Brockman AGAIN promise to create &quot;real AI&quot; (what was there before?) - this time by the end of 2026. Do we believe them? In this article, I will explain why the loud news that &quot;AI agents&quot; &quot;hacked&quot; someone on their own initiative is simply the biggest PR campaign in history - and how it is supposed to cover up the biggest financial pyramid in history, based on a deliberately false interpretation of the concept of &quot;artificial intelligence.&quot; And also under the cut - why Richard Dawkins, who recognized the presence of consciousness in &quot;AI,&quot; did not go mad in his old age, but fell into the trap of his own scientism (and the influence of Daniel Dennett). Make yourselves comfortable. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 09:07:46 GMT · <a href="https://habr.com/ru/companies/ddosguard/articles/1078030/?utm_campaign=1078030&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1075704.html">Four Copies of the Project and One Lab Monster. How to Teach an AI Agent to Write Code According to Design System Rules</a></h2>
-  <p>The screen looked almost alive. The model assembled a page with cards, statuses, and badges in minutes. It seemed I could put my feet up and finish my coffee. But then the code reached review. Beneath the neat interface were styled.div, HEX colors, and props that never existed in our design system. The result was that very lab monster, wheezing but unable to live in the project. So, I conducted an experiment with one frontend task, one model, and four identical copies of the project. In the first case, I left the agent without hints; in the second, I gave it a skill with project rules; in the third, I connected MCP with design system documentation; and in the fourth, I combined everything. I wanted to find out which combination would turn code generation into an elixir of speed, and which would spawn another monster unable to survive an encounter with typecheck and build. Read on.</p>
-  <p class="meta">Thu, 03 Sep 2026 08:59:50 GMT · <a href="https://habr.com/ru/companies/raiffeisenbank/articles/1075704/?utm_campaign=1075704&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077298.html">How to interact with AI and not lose data?</a></h2>
-  <p>Wake me up at night and ask &#x27;what not to do with AI&#x27;, and I&#x27;ll answer &#x27;upload confidential data&#x27;. This rule should be ingrained in us like the multiplication table. It should be, but it&#x27;s not a fact that it works in 100% of cases, especially if you play with AI not for work, but for personal purposes. Well, what could happen if I just ask the model to translate a piece of text from Elvish Sindarin into ordinary human language? If you are as anxious a paranoid as I am, then inside for you are a few simple settings for AI chats to sleep soundly. Yes, this is not an absolute guarantee that nothing will leak anywhere and the model will not learn anything from you, but, as they say, God protects those who protect themselves. And I will also show the full cycle of connecting your key to an AI client (footnote: an application where you can connect several AI models from different providers at once and work with them in one interface) using ChatBox as an example. It will be interesting for those who are just starting their acquaintance with the world of AI and want to try to safely integrate it into their processes. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 08:16:53 GMT · <a href="https://habr.com/ru/companies/cloud_ru/articles/1077298/?utm_campaign=1077298&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078008.html">Choosing a UI Tool for Rapid Prototyping in AI Products: Open WebUI</a></h2>
-  <p>When developing an AI product, we faced an unexpected challenge. Choosing an LLM turned out to be easier than choosing an interface for it. Ready-made AI chats are well-suited for dialogue with a single model, but they start to limit the product when it includes multiple agents, complex scenarios, and intermediate work stages. In this article, we will describe the essence of the task, the requirements, and analyze Open WebUI. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 08:11:26 GMT · <a href="https://habr.com/ru/articles/1078008/?utm_campaign=1078008&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077988.html">[Translation] Sam Altman: &quot;AGI will arrive by the end of 2026&quot;</a></h2>
-  <p>When a TIME journalist visited OpenAI&#x27;s office in early August, the company was simultaneously demonstrating its next major model to guests and observing protesters outside. Outside, dozens demanded a halt to the &quot;AI race,&quot; while inside, executives from OpenAI&#x27;s largest clients gathered to see Astra—a yet-to-be-released model that the company considers one of its most significant technological advancements. Read more</p>
-  <p class="meta">Thu, 03 Sep 2026 07:41:59 GMT · <a href="https://habr.com/ru/articles/1077988/?utm_campaign=1077988&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
-<article>
-  <h2><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077194.html">AI Agent to the Rescue: How We Automated Over 70% of Analyst Routine and Increased Team Efficiency</a></h2>
-  <p>Hi! My name is Dmitry Gavrilov, and I&#x27;m the head of the analytics competence center at MWS. My team is integrating AI skills into the work of data analysts. We looked at a typical workday and realized that routine consumes up to 75% of an analyst&#x27;s time. Can this be delegated to an AI agent without loss of quality? We tested this hypothesis on real tasks and got concrete results – I&#x27;m sharing them in this article. Read on</p>
-  <p class="meta">Thu, 03 Sep 2026 07:26:33 GMT · <a href="https://habr.com/ru/companies/ru_mts/articles/1077194/?utm_campaign=1077194&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></p>
-</article>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Published</th>
+            <th scope="col">Article</th>
+            <th scope="col">Full English</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+<tr>
+  <td><time datetime="2026-09-03T12:00:13+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077922.html">Not a Replacement, but a SuperAI-lity: What a Hackathon Gave Our Company</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1077922.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/basis/articles/1077922/?utm_campaign=1077922&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T11:54:46+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078124.html">Why does fintech need juniors when there&#x27;s AI? A review of 5 years of our Laboratory 2.0 with mechanics, statistics, and results</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078124.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/svoi_ru/articles/1078124/?utm_campaign=1078124&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T11:30:11+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078104.html">How We Taught ML to Predict Pump Failure 60 Days in Advance and Discovered We Were Always Fixing the Wrong Thing (Part 1)</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078104.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/datasapience/articles/1078104/?utm_campaign=1078104&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T11:03:39+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078100.html">The &quot;Archangel&quot; Architecture: How to Deploy an On-Premise Multi-Agent AI System in an Isolated Environment</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078100.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/articles/1078100/?utm_campaign=1078100&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T10:44:52+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078040.html">IDP and RPA will disappear as classes: what will happen to corporate automation</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078040.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/contentai/articles/1078040/?utm_campaign=1078040&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T10:04:20+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077944.html">Can AI Port an App to Aurora OS? An Experiment with Mattermost and RuStore Publication</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1077944.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/rostelecom/articles/1077944/?utm_campaign=1077944&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T09:24:20+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078038.html">One, the Best, or All Together? Seven Bugs, Four Fixers, and Seven Assemblers</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078038.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/articles/1078038/?utm_campaign=1078038&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T09:12:54+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078032.html">&quot;Anime Factory&quot; Opened: Releasing the Code for a Pipeline That Cuts Episodes into Shorts Itself</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078032.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/articles/1078032/?utm_campaign=1078032&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T09:07:46+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078030.html">Skynet or Scamnet? How Corporations Sold Us a Fantasy of &quot;Artificial Intelligence&quot; for Billions</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078030.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/ddosguard/articles/1078030/?utm_campaign=1078030&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T08:59:50+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1075704.html">Four Copies of the Project and One Lab Monster. How to Teach an AI Agent to Write Code According to Design System Rules</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1075704.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/raiffeisenbank/articles/1075704/?utm_campaign=1075704&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T08:16:53+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077298.html">How to interact with AI and not lose data?</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1077298.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/cloud_ru/articles/1077298/?utm_campaign=1077298&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T08:11:26+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1078008.html">Choosing a UI Tool for Rapid Prototyping in AI Products: Open WebUI</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1078008.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/articles/1078008/?utm_campaign=1078008&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T07:41:59+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077988.html">[Translation] Sam Altman: &quot;AGI will arrive by the end of 2026&quot;</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1077988.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/articles/1077988/?utm_campaign=1077988&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T07:26:33+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077194.html">AI Agent to the Rescue: How We Automated Over 70% of Analyst Routine and Increased Team Efficiency</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1077194.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/ru_mts/articles/1077194/?utm_campaign=1077194&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T07:18:11+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1071340.html">AI Agents: What They Are, How They Work, and How Our Assistant&#x27;s Agent Mode is Structured</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1071340.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/companies/1c/articles/1071340/?utm_campaign=1071340&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+<tr>
+  <td><time datetime="2026-09-03T07:16:41+00:00">2026-09-03</time></td>
+  <td><a href="https://kadimazoran.github.io/habr-ai-digest/articles/1077976.html">I Reconsidered My Stance on Obsidian After Building a Second Brain with 219,000 Files</a></td>
+  <td><a class="read-link" href="https://kadimazoran.github.io/habr-ai-digest/articles/1077976.html">Read full English</a></td>
+  <td><a href="https://habr.com/ru/articles/1077976/?utm_campaign=1077976&amp;utm_source=habrahabr&amp;utm_medium=rss">Russian original</a></td>
+</tr>
+        </tbody>
+      </table>
+    </div>
   </main>
 </body>
 </html>
