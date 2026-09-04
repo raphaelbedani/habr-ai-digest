@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testing the capabilities of the new Gemini 3.8 — can you build a 3D shooter without an engine?</title>
+  <meta name="description" content="On September 2nd, Google released Gemini 3.8 Flash. In the announcement, developers emphasized autonomous agents and solving complex engineering tasks with long context. Marketers, of course, promised a significant qualitative leap in coding. I read the release, watched the demo videos. And it was t">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Testing the capabilities of the new Gemini 3.8 — can you build a 3D shooter without an engine?</h1>
+    <p>On September 2nd, Google released Gemini 3.8 Flash. In the announcement, developers emphasized autonomous agents and solving complex engineering tasks with long context. Marketers, of course, promised a significant qualitative leap in coding. I read the release, watched the demo videos. And it was the Minecraft clone I saw that sparked an idea to test if it can really do something like that, as previously we could only manage something at the level of Arkanoid. Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078464/?utm_campaign=1078464&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Fri, 04 Sep 2026 09:05:57 GMT
+    </p>
+  </header>
+  <main>
+<div><p>On September 2nd, Google released Gemini 3.8 Flash. In the announcement, developers emphasized autonomous agents and solving complex engineering tasks with long context. Marketers, of course, promised a significant qualitative leap in coding.</p><p>I read the release, watched the demo videos. And it was the Minecraft clone I saw that sparked an idea to test if it can really do something like that, as previously we could only manage something at the level of Arkanoid.</p><div></div><p>I asked the model itself: can it write a first-person 3D shooter from scratch.</p><p>The answer was, yes, it's quite feasible if the project is decomposed.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/088/ed3/bcb/088ed3bcb77b399f13cd5753d2f2fcf5.png"/></figure><p>Words are not enough, so I decided to immediately test the system's limits.</p><p>I grew up on 90s games. Now they are called retro shooters, but for me, they are simply childhood games: Doom, Heretic, Blood, and especially the dark fantasy Hexen with its catacombs and magic staffs. The task for testing was this: a 3D action game in a dark fantasy style, with labyrinths, key hunting, hordes of undead, responsive combat system, and a heavy atmosphere.</p><p>Gemini said that no ready-made engines like Unity or Godot would be needed. We'll use lightweight Three.js, native WebGL, and launch through a custom local launcher in C#.</p><p>The experiment began.</p><h2>First attempt and the illusion of ease</h2><p>The beginning looked promising. The model briskly sketched out the basic framework – a room grid, a camera controller with mouse cursor capture, and simple wall rendering. To achieve the aesthetic of classic PC games, the neural network rendered through a virtual buffer of low resolution 426x240 pixels with stepped scaling. The image instantly acquired the desired pixel density without blurring.</p><p>But as soon as it came to graphical assets, the first harsh tests of the model's capabilities began.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/e20/619/e39/e20619e39c0a3471f069f1a96044a720.png"/></figure><p>The neural network tried to generate monsters. Skeletons, demons, torches, all sorts of things. In practice, I got flat images, stubbornly stuck to white backgrounds. When Three.js displayed such a sprite through standard transparency, an ugly whitish halo about three pixels thick remained around the skeleton's bones. The monster looked not like a creature of darkness, but like an appliqué carelessly cut out of a magazine.</p><p>I had to redo it and explain the alpha mask mechanics to the model. The model suggested a Python script with per-pixel traversal and mask expansion. It became better and more atmospheric.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a6a/001/026/a6a00102640682d615f644d8db5015b8.png"/></figure><p>And here the neural network produced the following glitch.</p><p>I asked for a shot frame for the combat staff. In idle mode, the player saw a gauntlet and a carved skull pommel. I press the attack button – and right behind the staff, out of nowhere, materializes... a semi-transparent skeleton, covering half the screen. When generating the frame with the magic flash, the model decided that the special effect lacked drama and drew a dead warrior in the background.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/bbb/0f6/dd0/bbb0f6dd09e66039d52d4f41bec7b95a.png"/></figure><p>I made the skeleton erase it, and rebuilt the flash on the third try.</p><h2>Ghost in the Gauntlet</h2><p>The second problem with the weapon turned out to be more subtle. The neural network generated the staff too detailed each time. It resembled a modern 3D render inserted into a pixelated environment and monstrously clashed with the style.</p><p>I found the solution through color quantization. We wrote a script that forcibly compressed the weapon image to a 136x136 pixel grid with an adaptive palette of old video cards, and then scaled it back up using the nearest neighbor method. The staff finally became grainy, brutal, and pixelated.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/0c5/0c8/704/0c50c8704a5fff3be21350bb5f043afc.png"/></figure><p>But then a new trouble struck. I entered the game and found that the hero's gauntlet was transparent. Through the fingers and knuckles, the stone floor slabs were clearly visible. </p><p>I went into the background cleanup script. It turned out the model set the black color cutoff threshold at thirty-two brightness units. And the folds of dark leather on the gauntlet had a deep brown-black hue. The algorithm simply burned out over sixty thousand dark pixels inside the hand itself, mistaking them for the dungeon background.</p><p>I had to cut off the background strictly from the outside of the contour, without entering the hand's coordinates. The gauntlet became solid and monolithic again.</p><h2>Geometry of the Satanic Temple and a Boss Stuck to the Ceiling</h2><p>The game gradually gained substance. I built four levels with different biomes:</p><ul><li><p>A forgotten crypt of gray sandstone with scarlet banners.</p></li><li><p>Flooded catacombs with mossy walls and greenish water underfoot.</p></li><li><p>A sacrificial hall of bloodstone with chains and niches for bones.</p></li><li><p>The final Temple with colonnades of black obsidian and magmatic cracks.</p></li></ul><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c12/d7e/349/c12d7e349665f682d1b8b0cea4ab4e19.png"/></figure><p>I conceived the final boss, Arch Necromancer Mortis, as huge. The model obediently gave him a sprite five and a half meters tall. I load the fourth level, enter the central nave – and see that the boss's horned crown pierces the ceiling slabs by a meter. Mortis was literally stuck with his head in the ceiling and slid around the hall like that.</p><p>The architectural engine initially calculated all levels for a standard wall height of four and a half meters. This was enough for the narrow corridors of the first locations. It was not suitable for a cathedral.</p><p>I had to ask to rework the map generator – on the final level, I raised the vaults to seven and a half meters, added monumental columns, and recalculated the boss's proportions. A true gothic volume appeared, and the necromancer had three meters of free air above his head.</p><h2>The Mystery of the Smearing Shooters</h2><p>When I started testing the combat system, it turned out that the monsters correctly tracked the player using pathfinding algorithms, growled, raised crossbows, threw fireballs, but couldn't hit the hero at all. All projectiles invariably stuck in the stone floor two meters in front of the shooter.</p><p>The reason was that the firing vector was calculated from the projectile's spawn coordinates to the player's position. But in three-dimensional space, the player's point had a height of zero – the level of their heels on the floor. And the arrow flew out of the crossbow at a height of one and a half meters. The monsters were simply diligently shooting at their own feet at a forty-five-degree angle.</p><p>I asked to rework the target selection to the center of mass with a correction for movement speed, and also to replace point collision detection with continuous capsule collision. Before that, fast bolts at high speed simply passed through the player between frame ticks. After the changes, the enemies started hitting brazenly, accurately, and painfully.</p><h2>Living Fire and Vintage Interface</h2><p>When the mechanics settled, the game needed atmosphere. The green light on the staff was initially a static image. I assembled a four-frame cycle, and now in idle mode, the flame sways, stretches, and emits tiny emerald sparks at a rate of about eight frames per second.</p><p>I also rebuilt the interface. I discarded the smooth modern panels, replacing them with forged steel frames with stepped shadows. I cut the health and mana bars into small pixelated segments in the style of old 90s shooters. In the center, I placed a stone gargoyle medallion that breathes and monitors the hero's condition.</p><p>For greater atmosphere, I asked to generate system 8-bit music. It turned out terribly. I had to go to SUNO. I integrated MP3 streaming without buffering into the C# launcher. And on the start screen, right under the gothic logo, I hung a broken tile with a flickering bloody inscription: "Generated by NeuroScum". Self-irony =)</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/cf6/d98/a6f/cf6d98a6f9cf59df6be18d5a358f72dc.png"/></figure><p>When the project was ready, I decided to record a short gameplay video for demonstration. I launched Bandicam, pressed the hotkey, and quickly ran through the levels. During the game, there were no freezes or distortions – nothing. But on the recording – it was a horror, like 20fps.</p><p>The reason lay at the intersection of browser technologies and video capture. By default, the WebGL canvas was created with an active alpha channel. During normal gameplay, the graphics card doesn't notice this. But the capture program forced the Windows window manager to read the video buffer every frame, recalculating the transparency of the entire window. </p><p>I disabled the canvas transparency in the engine, passed direct video memory access flags to the browser, and in the recording program, switched the encoder to the graphics card's hardware chip. The recording delays didn't disappear, but it was much better.</p><div></div><h2>An honest verdict on how the model handled the task</h2><p>Could Gemini 3.8 make a game? Yes, it could. Before me is a completely autonomous project: four completed levels, labyrinths, keys, loot barrels, projectile physics, melee and ranged enemies with behavior on injury and death, a boss with two combat phases, and retro sound. All ninety-five assets and textures are assembled and packed without a single third-party engine.</p><p>But tales of "press one button – get a masterpiece" are still just tales. The new model codes excellently, although it makes a huge number of mistakes due to a complete lack of spatial imagination. And, of course, most of the issues were with the visuals, not the technical aspects. That is, here we are working exclusively in the mode: set the task – check – correct – check again. And the more detailed you describe it, the faster the expected result will be obtained.</p><p>So far, no miracle has happened. But, if you understand how the scene geometry, alpha channels, and rendering pipeline work, and are ready to methodically point the model's nose at technical artifacts – the tool saves weeks of routine work.</p><p>But personally for me – this case was an extremely pleasant experience.</p><p> </p></div>
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

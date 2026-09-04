@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Model That Thinks in Circles: What&#x27;s Really New in GPT-6 Astra</title>
+  <meta name="description" content="OpenAI has reinvented how the model thinks. Or have they just returned to the well-forgotten old? In GPT-6 Astra, a word is not born in a single pass through the layers, but in several rounds through the same block. The idea was proposed back in 2018, and recurrence was once supplanted by transforme">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The Model That Thinks in Circles: What&#x27;s Really New in GPT-6 Astra</h1>
+    <p>OpenAI has reinvented how the model thinks. Or have they just returned to the well-forgotten old? In GPT-6 Astra, a word is not born in a single pass through the layers, but in several rounds through the same block. The idea was proposed back in 2018, and recurrence was once supplanted by transformers. Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078462/?utm_campaign=1078462&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Fri, 04 Sep 2026 09:03:46 GMT
+    </p>
+  </header>
+  <main>
+<div><p>Yesterday, OpenAI <a href="https://openai.com/index/gpt-6-astra/">rolled out GPT-6 Astra</a> and called it the smartest and most aligned model in the world. Greg Brockman <a href="https://www.axios.com/2026/09/03/openai-astra-gpt-6-agi-brockman">said</a> it's a leap forward and that Astra can reasonably be considered a version of AGI. A separate wave went out about cybersecurity: it's the first model that OpenAI itself <a href="https://www.unite.ai/openai-releases-gpt-6-astra-its-first-model-rated-critical-for-cyber/">rated as Critical</a> in its readiness framework, meaning it can find unknown vulnerabilities and write exploits for them without human guidance.</p><p>All this is noisy, but in my opinion, secondary. The main thing about this release is not the percentages on benchmarks or cybersecurity scares. The main thing is that for the first time in production, the way <strong>a word is born</strong> has changed.</p><p>Let's figure out what has changed and why this is a very interesting release.</p><h3>What Does a Transformer Actually Do?</h3><p>I'll start with the basics; you can't get anywhere without them.</p><p>Ilya Sutskever once gave John Carmack <a href="https://github.com/dzyim/ilya-sutskever-recommended-reading">a list of thirty papers</a> with the words: if you learn these, you'll understand 90% of what's important in AI today. His thesis, which he repeated many times: to predict the next token well means to understand the reality that generated that token. Not to "guess letters," but to keep in mind the world from which the phrase grew.</p><p>The mechanics of this prediction are disarmingly simple. The model does only two things, but many times in a row. The attention mechanism looks at what the given sequence is about. The second mechanism delves into internal knowledge and retrieves what is related to this topic.</p><p>Let's take the phrase "Elbrus is...". Attention sees that it's about a certain Elbrus. Knowledge brings up everything most often associated with this word, and the model will almost certainly continue about the mountain in southern Russia. But there's also a noticeable probability that it will go to the Russian processor – the word is the same, but there are two worlds behind it, and the model chooses between them based on context.</p><p>Now for the most counter-intuitive part. The model takes the last word and <strong>transforms</strong> it into the next one, mixing in the meaning of the sequence and the retrieved knowledge. The concept "Elbrus" gradually acquires context and becomes the concept "mountain," and this mountain emerges as the next word. Hence the name: transformer – one who transforms.</p><p>One transformation is not enough, so there are many blocks in the stack: the word passes through them sequentially from bottom to top, becoming slightly more accurate with each one. Want a smarter model? Either add more blocks or make them thicker. In essence, "increasing the brain" has meant exactly this for the past few years.</p><h3>What If We Let the Model Work on Its Own Draft?</h3><p>Now for the idea that caused the stir.</p><p>The Information <a href="https://www.theverge.com/ai-artificial-intelligence/988334/openai-astra-ai-monitoring-safety">reported</a>, citing a person familiar with the development, that Astra is structured as a looped transformer. OpenAI did not deny this, although they had the opportunity. Perhaps they leaked it themselves – like iPhone releases leak from Chinese factories.</p><p>What this means. The stack of blocks reaches the end – and instead of releasing the word, it sends the result back to its own input. And runs it again. And again. The word only comes out after the loops are finished. This is the loop, hence "looped transformer"; from now on, I will call such a model "looped.".</p><p>The closest human analogy: you think of a thought, you've already opened your mouth – and you realize you should run it through one more time before speaking.</p><figure><img alt=
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why do developers continue to write code by hand?</title>
+  <meta name="description" content="AI agents write code tens of times faster than humans. They cover it with tests and write documentation. They review, find bugs, and fix them. They work on different tasks in parallel. So why do some people continue to type every line of code manually? Why don&#x27;t they want to delegate this to AI">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Why do developers continue to write code by hand?</h1>
+    <p>AI agents write code tens of times faster than humans. They cover it with tests and write documentation. They review, find bugs, and fix them. They work on different tasks in parallel. So why do some people continue to type every line of code manually? Why don&#x27;t they want to delegate this to AI agents? Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078298/?utm_campaign=1078298&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Thu, 03 Sep 2026 17:21:44 GMT
+    </p>
+  </header>
+  <main>
+<div><p>Imagine you need to write a long text that requires thinking, gathering information, and analyzing it. Then you need to write the text itself, proofread it, correct errors, and improve wording. You spend, for example, 10 hours on this work. Now you need to translate this finished text into another language that you also know very well. You can translate it yourself or use an automatic translator. In the first case, you need to translate each sentence manually, choosing the best idioms so that the text sounds native to a native speaker. The time spent on translation grows proportionally to the size of the text. But if you use an automatic translator, you will get the translation in a few seconds. You will only need to proofread the text and change some words that were translated incorrectly. The time spent on intellectual work when composing text is tens of times greater than mechanical translation.</p><p>Another example. You decide to rewrite a large project from C++ to Rust or from PHP to TypeScript. You think through the refactoring plan, choose frameworks and libraries, determine the order of rewriting modules, and consider how you will migrate tests and update documentation. You get a complete picture of what the result will look like. Now comes the routine – the actual coding, following the plan. You can write each line of code manually or assign the task of executing the plan to an AI agent. The migration time for the codebase can vary by tens or even hundreds of times.</p><p>Yes, translating a finished text and refactoring a finished codebase are not the same as creating new projects. But what's the difference? After all, in new projects, before writing code, we also think through the implementation plan, discuss task solutions with AI, and make many small decisions. Before writing code, we already have a general idea of what the code will look like, which modules, what test coverage. If we can't think through the entire project, we start by thinking through just a few modules, and after their implementation, we move on to the next modules. But we always think through the implementation and make decisions first, and only then write the code. Just like before translating text into another language, we first compose the text itself. Translating text from one natural language to another is as routine a job as translating from a natural language to a programming language.</p><p>Some people still don't believe that AI can speed up coding several times. Although they are no longer surprised that AI can create meaningful structured text in a regular chat in seconds. With charts, images, lists, tables. But when it comes to writing code, people have doubts about speeding up the process.</p><p>Others believe in acceleration, but they ask: if our efficiency increases 10 times, the business won't pay us 10 times more, right? Why then increase our efficiency?</p><p>But we live in a capitalist world. We must work efficiently not only to increase our income but also simply to avoid being fired. AI may not even increase business revenue, but it will definitely increase the amount of visible work that your manager can review.</p><p>Business will not always have good times when it can keep inefficient employees. Sooner or later, there will come a moment when someone needs to be fired. If other employees write more lines of code, make more commits, and close more tasks with the help of AI, and your efficiency doesn't change, you will be the first on the list to be fired.</p><p>You may disagree with the idea that employees should be evaluated by the number of lines of code, commits, or tokens burned. And here you have 3 options: try to convince management to accept your point of view, accept their approach, or quit and find another company where employees are evaluated by different parameters.</p><p>If you try to challenge the business management's approaches, I can only wish you luck, but most likely, luck will not be on your side, and you will be fired. The system dislikes those who try to change it. If you choose to change jobs, your life will again turn into a series of random circumstances and stress, and you might spend several years looking for a suitable job.</p><p>The only option left is to accept the business's requirement that employees must use AI to increase their efficiency. And this means you must write more code, commit more, and close more tasks. At the same time, your salary will not increase.</p><p>Often, skeptics argue that the code will become unmaintainable, technical debt will grow, the programmer will not see the entire system, will not be able to fix bugs or change something in the code themselves.</p><p>And even young people aged 25-30 make such arguments, and some of them already have many years of development experience. These are not middle-aged people who are used to manual coding and don't want to change anything in their lives. These are young specialists who, I thought, should be open to new experiences.</p><p>If I assign tasks to an AI agent, make architectural decisions, review code, and check all tests, how can one say that I don't understand the project's code? After all, the AI writes exactly the same code that I would write myself. And if I haven't opened a project for a whole year, it doesn't matter who wrote the code: me, another person, or an AI agent. The code will be incomprehensible without reading the documentation. You'll have to recall what was done and why.</p><p>Another reason for refusal is that AI writes more useless code that is not even related to the task. And for them, this is a valid reason to write all the code manually. Although all that is needed is to ask the AI agent to check the code and remove everything unnecessary from it. You don't even need to review the code immediately after completing the task. First, ask the AI agent to review it, then fix errors, then review again, and fix again. If you don't want to ask it every time, it can do it itself in a loop. One sub-agent writes code, another refactors, a third reviews, a fourth fixes errors. You can set up any sequence. With a very high probability, after this cycle, there will be no useless code left in the project.</p><p>But then we will forget how to write code and will not be able to maintain projects at all. But why will we need to manually maintain projects in the future? Such a scenario should be considered if we assume that the AI bubble will burst, providers will raise prices hundreds of times, and open-weight AI will stop developing. But even now, you can set up a home server, run something like Qwen, and not depend on paid providers. And with proper use, the code will be the same as when using Claude or GPT.</p><p>So why do people want to do routine work that an AI agent can do automatically?</p><hr/><p>All my articles can be found on <a href=
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>
