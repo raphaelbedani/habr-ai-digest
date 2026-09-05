@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tensor Cores Are No Longer Enough: Why AI Accelerators Will Hit a Memory Wall</title>
+  <meta name="description" content="AI accelerator manufacturers continue to increase the number of tensor cores and adopt shorter data formats like FP8 and FP4. Performance seems to be growing at an impressive rate, but there&#x27;s a catch. Compute units need a constant supply of model weights and intermediate data. If memory can&#x">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tensor Cores Are No Longer Enough: Why AI Accelerators Will Hit a Memory Wall</h1>
+    <p>AI accelerator manufacturers continue to increase the number of tensor cores and adopt shorter data formats like FP8 and FP4. Performance seems to be growing at an impressive rate, but there&#x27;s a catch. Compute units need a constant supply of model weights and intermediate data. If memory can&#x27;t keep up, the expensive chip with tens of billions of transistors literally idles, waiting for the next batch of data. Samsung plans to solve this with HBM5, aiming to double performance relative to HBM4E and increase power efficiency by 20%. The bandwidth of a single stack could approach 4 TB/s with a 4096-bit bus. Let&#x27;s dive into the details.</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/companies/ru_mts/articles/1078518/?utm_campaign=1078518&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Sat, 05 Sep 2026 07:01:04 GMT
+    </p>
+  </header>
+  <main>
+<div><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f9f/4c0/ec9/f9f4c0ec9926eae99facd4e803d09bc4.png"/></figure><p>AI accelerator manufacturers continue to increase the number of tensor cores and adopt shorter data formats, including FP8 and FP4. Performance seems to be growing at an impressive rate, but there's a catch. Compute units need a constant supply of model weights and intermediate data. If memory can't keep up, the expensive chip with tens of billions of transistors literally idles, waiting for the next batch of data.</p><p>Samsung <a href="https://www.tomshardware.com/pc-components/dram/samsung-teases-new-hbm5-with-twice-the-performance-of-hbm4e-ambitious-data-transfer-rates-could-hint-at-4-096-bit-interface">plans to solve</a> the problem with HBM5: doubling performance relative to HBM4E and increasing power efficiency by 20%. The bandwidth of a single stack could approach 4 TB/s with a 4096-bit bus. Let's dive into the details.</p><h3>When an Accelerator Has Nothing to Compute</h3><p>A large language model is primarily a vast set of numerical parameters. During operation, these need to be fetched from memory, transferred to compute units, used in matrix operations, and then intermediate results must be written back. This process repeats for each layer and each new token.</p><p>Suppose an accelerator is equipped with twice as many tensor cores. On paper, its performance increases accordingly. But in practice, it will only double if all cores are constantly busy. If the memory cannot supply data at the required speed, some units will idle. The chip becomes larger, more expensive, and more power-hungry, while the neural network barely speeds up.</p><p>Computational intensity—the number of operations per byte—is also important. When a block of data is loaded once and then used multiple times, the speed is determined by the capabilities of the compute cores. However, if values are constantly re-read, memory becomes the bottleneck. Adding more tensor cores is useless in such a situation.</p><p>The problem is particularly noticeable in sequential text generation. For each new token, the accelerator must re-process all model layers and read their weights from memory. Yes, weights can be reused, but if the model processes few requests simultaneously, this happens infrequently. Therefore, the generation speed is often limited not by compute units but by memory bandwidth.</p><p>As the context grows, so does the KV cache, which stores keys and values for processed tokens. The longer the conversation or document and the more requests processed concurrently, the larger the data array that needs to be read. So, capacity alone is not enough. Memory size determines whether the model and its working data fit, while bandwidth determines how quickly the system works with them.</p><p>Naturally, developers try to circumvent limitations using caches, prefetching, and switching to FP8 or FP4. However, SRAM occupies a lot of space on the die, making it impossible to store tens of gigabytes of weights in it. Reduced precision decreases the amount of data transferred, but models and their contexts continue to grow. The freed-up bandwidth quickly finds a new master.</p><h3>How HBM Reached a 2048-bit Bus</h3><p>Standard DDR memory connects to the processor via relatively narrow channels and is installed on separate modules. This is cheap and convenient: memory can be replaced or expanded. However, for the thousands of parallel working units in an AI accelerator, this design is clearly insufficient.</p><p>In HBM, DRAM dies are stacked on top of each other and connected using TSVs—Through-Silicon Vias. The finished stack is placed next to the compute die on a common substrate. Short connection lines allow for a wide bus and the transfer of large amounts of data with lower power consumption.</p><p>The very first generation of HBM featured a 1024-bit interface per stack. For comparison, a single channel of standard DDR has a width of 64 bits. In subsequent generations, manufacturers increased the number of layers, capacity, and speed of individual lines. HBM3 and HBM3E became the foundation of modern AI accelerators, with the bandwidth of a single stack exceeding 1 TB/s.</p><p>Unfortunately, frequencies cannot be increased indefinitely. At higher speeds, losses increase, interference between adjacent conductors intensifies, and timing tolerances shrink. More complex transmitters, receivers, and signal equalization circuits must be added. These take up space and consume power.</p><p>Therefore, in HBM4, the interface width was increased from 1024 to 2048 bits. The principle is similar to widening a road: to let twice as many cars through, you don't necessarily have to make them drive twice as fast—you can double the number of lanes. In the case of HBM, these "lanes" are the interface lines. However, doubling them required additional contacts, a redesigned controller, and a more complex substrate.</p><h3>Why HBM5 Needs 4096 Bits</h3><p>The standard speed for HBM4E is expected to be around 12 GT/s per pin, although controller developers are already demonstrating solutions with 16 GT/s. However, Samsung aims to roughly double the performance of HBM5 compared to HBM4E. If the 2048-bit bus is maintained and this performance increase is achieved solely through transfer speed, it would need to increase to approximately 24 GT/s per pin.</p><p>Doubling the speed of several thousand lines in a single generation is challenging. At such frequencies, interference and signal distortion become more pronounced, and timing requirements become stricter. Stable operation will require more complex transmitters, receivers, and correction circuits. These will occupy additional space on the die and increase power consumption, hindering the promised increase in power efficiency.</p><p>An alternative could be another doubling of the bus width—this time to 4096 bits. Such an interface transmits twice the information at the same speed per pin. A less radical option is also possible: for example, 3072 lines combined with a moderate frequency increase.</p><p>Notably, Samsung has not yet confirmed a 4096-bit bus as a specification for HBM5. The company has stated target performance metrics but has not disclosed how it intends to achieve them. Therefore, both the interface width and the bandwidth of around 4 TB/s should currently be considered engineering projections rather than specifications.</p><p>However, widening the bus also presents numerous challenges. Each additional line requires contacts, a transmitter, and a receiver, which occupy space on the base die and substrate. If multiple HBM5 stacks are placed next to the accelerator, the number of connections will reach tens of thousands. These must be accommodated in a limited area alongside compute chiplets and power circuitry.</p><p>Packaging will also become more complex. All dies might be fully functional, but a single faulty connection can ruin an expensive assembly. Denser substrates, earlier component testing, and line redundancy will be necessary. In short, the additional terabytes per second will come at a cost not only in electricity but also in yield.</p><h3>What 4 TB/s Will Mean for AI Systems</h3><p>The increased bandwidth will allow accelerators to handle longer contexts and serve more requests simultaneously before memory becomes a bottleneck. For data center owners, this is almost more important than record-breaking benchmark results: the higher the utilization of each accelerator, the less equipment is needed to serve the same number of users.</p><p>During training, the effect depends on the specific operations. Large matrix multiplications typically load tensor cores well and reuse the resulting data multiple times. Normalization, parameter exchange, some attention mechanisms, and the operation of models with mixtures of experts are more memory-dependent. It is in these areas that HBM5 can reduce idle times.</p><p>However, a twofold increase in bandwidth does not mean a twofold acceleration for any neural network. If a task is bottlenecked by tensor cores, new memory will change almost nothing. Real-world speed will be lower than peak performance and will be affected by random access patterns or suboptimal data placement. Therefore, evaluating HBM5 solely by its peak bandwidth is misleading.</p><p>Samsung aims to increase power efficiency by 20% compared to HBM4E. However, HBM5 will not consume less power; bandwidth will double, and the absolute power consumption of the stack will still increase. The reduction in energy consumption is expected to come from a new base die manufactured using a 2nm process—instead of the 4nm process used for HBM4 and HBM4E.</p><p>Simultaneously, heat dissipation will increase, and removing heat from a multi-layer stack is more challenging than from a conventional chip. For HBM5, Samsung is developing a Heat Path Block design with additional heat-conductive elements within the stack. The company expects to reduce thermal resistance by 20%, allowing heat to be transferred more quickly to the cooling system. For high-end AI accelerators, this likely means a further adoption of liquid cooling.</p><h3>How the AI Accelerator Industry Has Changed</h3><p>HBM5 demonstrates that the development of AI accelerators can no longer be solely focused on increasing computational power. Performance now depends on the entire system: memory, interface, packaging, power, and cooling. A fast processor cannot reach its full potential if data is not supplied to it quickly enough.</p><p>However, 4 TB/s per stack will not eliminate the bottleneck forever. Faster memory will enable the creation of larger models, longer contexts, and serving more requests—after which data exchange will once again become the bottleneck. Thus, HBM5 will only provide the industry with a buffer until the next generation of AI accelerators.
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

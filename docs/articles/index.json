@@ -7,6 +7,14 @@
     "summary": "The modern concept of work, rooted in the Industrial Revolution, shifted the role of creator from human to machine, redefining the worker from a master of their craft to an operator of machine labor. Machines now perform most tasks, yet humans remain bound as appendages, forced to work at machine pace and within machine constraints. This is the antithesis of free, motivated, and meaningful work that truly defines humanity. The industrial concept of the 'worker' is dehumanizing; one is either human or a worker. The solution isn't regression, but completing the industrial revolution through automation, with AI serving as the thinking appendage to mechanisms. This is precisely why AI was invented.",
     "title": "The AI Labor Revolution: From Machine-Centric to Human-Centric Division of Labor"
   },
+  "https://habr.com/ru/articles/1076084/?utm_campaign=1076084&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 17:21:22 GMT",
+    "slug": "1076084",
+    "source_url": "https://habr.com/ru/articles/1076084/?utm_campaign=1076084&utm_source=habrahabr&utm_medium=rss",
+    "summary": "In the final part of my previous article, I promised a breakdown of the response generation loop with hybrid data extraction (LLM-tools + regex). However, I'm slightly altering plans and switching to a different topic – driven by a practical engineering experiment. I'll try to be brief and to the point.:-)",
+    "title": "How I Fed 60 Million Tokens to Stealth/Ox-Alpha, or the Story of How 127 n8n Nodes Were"
+  },
   "https://habr.com/ru/articles/1077976/?utm_campaign=1077976&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
     "published": "Thu, 03 Sep 2026 07:16:41 GMT",
@@ -30,6 +38,14 @@
     "source_url": "https://habr.com/ru/articles/1078008/?utm_campaign=1078008&utm_source=habrahabr&utm_medium=rss",
     "summary": "When developing an AI product, we faced an unexpected challenge. Choosing an LLM turned out to be easier than choosing an interface for it. Ready-made AI chats are well-suited for dialogue with a single model, but they start to limit the product when it includes multiple agents, complex scenarios, and intermediate work stages. In this article, we will describe the essence of the task, the requirements, and analyze Open WebUI. Read more",
     "title": "Choosing a UI Tool for Rapid Prototyping in AI Products: Open WebUI"
+  },
+  "https://habr.com/ru/articles/1078012/?utm_campaign=1078012&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Sat, 05 Sep 2026 08:11:10 GMT",
+    "slug": "1078012",
+    "source_url": "https://habr.com/ru/articles/1078012/?utm_campaign=1078012&utm_source=habrahabr&utm_medium=rss",
+    "summary": "Continuing to explore interface options for working with LLMs in AI product development. In the previous part, we looked at Open WebUI; now, we'll move on to Assistant-UI. Read more",
+    "title": "Choosing a UI tool for rapid prototyping in AI products: Assistant-UI"
   },
   "https://habr.com/ru/articles/1078032/?utm_campaign=1078032&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
@@ -79,6 +95,14 @@
     "summary": "I started with a simple AI audit of notes, and ended up with Vault Audit AI growing into a system with two indexes, semantic search, Similar Notes, semantic duplicates, and RAG for my own vault. In the article, I'll break down how it all works, what broke along the way, and why nearly 700 tests still didn't save me from surprises in a real Obsidian vault. Read more",
     "title": "I just wanted to organize Obsidian. In the end, I wrote two indexes, semantic search, and RAG"
   },
+  "https://habr.com/ru/articles/1078442/?utm_campaign=1078442&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 15:25:40 GMT",
+    "slug": "1078442",
+    "source_url": "https://habr.com/ru/articles/1078442/?utm_campaign=1078442&utm_source=habrahabr&utm_medium=rss",
+    "summary": "AI development is moving forward, but almost all visible progress is in the realm of knowledge work, i.e., actions that occur inside a computer. Among AI developers in San Francisco, there is a widespread opinion that robots will soon join this sphere. Parallel to the race for general-purpose AI development is an equally aggressive race for general-purpose robots – humanoid machines with physical intelligence. Artificial workers capable of cooking and cleaning, being loaders... and doing everything else, including producing their own kind, leading (according to many forecasts) to economic growth characterized as 'explosive'. In other words, the prevailing opinion is that AI in data centers will soon replace all intellectual labor, and AI in humanoid bodies will soon replace all physical labor. However, there is an important difference: we are already seeing progress in intellectual labor, but physical AI largely remains confined to test sites and demonstration videos. There is no robot equivalent to ChatGPT that we can buy. Therefore, we have to limit ourselves to video demonstrations. Unfortunately, this tool is not well-suited for assessing progress. We may be seeing one successful attempt out of a hundred failures. The demonstration scenario can be carefully crafted to avoid complexities that the robot is not yet ready for. The video can be edited to make it seem like the robot acts faster and more clearly than it actually does. There is an example of a very impressive demonstration... with a suspiciously large number of camera angle changes. (I haven't seen almost any videos from the recent World Humanoid Robot Games yet. They are valuable because there are fewer opportunities for selective presentation of facts on a public platform. In a couple of videos I watched, impressive capabilities can be seen, but they don't touch upon many of the complexities I've listed below... Also, these videos have many high-profile failures.) Demonstrations draw attention to what robots can already do. The question arises: what can't they do? In this post, I will list the technical challenges we need to overcome to realize general-purpose artificial workers. The next time you see a robot doing something impressive, ask yourself: which of the capabilities listed in the article did the robot demonstrate, and which complexities did the video scenario try to bypass? (It's worth noting that some tasks become easier if wheeled robots are used instead of strictly humanoid ones. A wheeled robot can carry more weight, so power, endurance, and electronics power are less critical for it. The probability of falling is also lower for it. However, such robots cannot climb stairs, step over obstacles, or bend down to pick something from a cabinet.) Read more",
+    "title": "[Translation] 14 Reasons Why Robotics Is Hard"
+  },
   "https://habr.com/ru/articles/1078462/?utm_campaign=1078462&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
     "published": "Fri, 04 Sep 2026 09:03:46 GMT",
@@ -95,6 +119,38 @@
     "summary": "On September 2nd, Google released Gemini 3.8 Flash. In the announcement, developers emphasized autonomous agents and solving complex engineering tasks with long context. Marketers, of course, promised a significant qualitative leap in coding. I read the release, watched the demo videos. And it was the Minecraft clone I saw that sparked an idea to test if it can really do something like that, as previously we could only manage something at the level of Arkanoid. Read more",
     "title": "Testing the capabilities of the new Gemini 3.8 — can you build a 3D shooter without an engine?"
   },
+  "https://habr.com/ru/articles/1078486/?utm_campaign=1078486&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 09:30:50 GMT",
+    "slug": "1078486",
+    "source_url": "https://habr.com/ru/articles/1078486/?utm_campaign=1078486&utm_source=habrahabr&utm_medium=rss",
+    "summary": "In recent years, writing working code has become almost trivially easy, while building a good software system has become harder. Today, someone without a traditional IT background can, in an evening, assemble an interface, API, database, and even deploy something. And then the real fun begins: the architecture starts to fall apart, dependencies take on a life of their own, security appears in \"version 2.0,\" and no one really understands why the system works at all. I wrote this article after observing colleagues, students, and acquaintances who are increasingly using AI for development. And I caught myself thinking: AI has made code production cheaper, but it has hardly made understanding what code to produce any cheaper. Hence the main question: what should a small IT company look like if a significant part of the work can already be done by digital performers? I present my controversial model of such a company: a smart analyst, an architect-developer, a super-tester, a dreamer, a DevOps engineer, and a security paranoid. Plus, the company's collective memory, because without it, neural networks quickly start reinventing the architecture from scratch. Perhaps half of these roles could indeed be filled by one person in slippers. But then, an unpleasantly large number of requirements arise for that person... What have you invented now?",
+    "title": "The Architect, the Paranoid, the Dreamer, and Other Employees of the Future IT Company"
+  },
+  "https://habr.com/ru/articles/1078646/?utm_campaign=1078646&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 15:07:20 GMT",
+    "slug": "1078646",
+    "source_url": "https://habr.com/ru/articles/1078646/?utm_campaign=1078646&utm_source=habrahabr&utm_medium=rss",
+    "summary": "CMF is a new format for neural networks. This article explains how CMF differs from GGUF and SafeTensors, and how multiple capabilities can be layered onto a common structure without storing separate full models. This is the first detailed open publication of the CMF format, and it can already be used in your own projects. I welcome developers who are ready to expand its capabilities and test the results on their own tasks. CMF GitHub Read more",
+    "title": "CMF: A New Format for Creating Specialized LLM Models"
+  },
+  "https://habr.com/ru/articles/1078718/?utm_campaign=1078718&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 22:12:31 GMT",
+    "slug": "1078718",
+    "source_url": "https://habr.com/ru/articles/1078718/?utm_campaign=1078718&utm_source=habrahabr&utm_medium=rss",
+    "summary": "My recent interactions with Russian banks prompted me to investigate how decisions are currently made regarding ordinary depositors. It's clear that all banks use AI systems to varying degrees, with each having a unique decision-making algorithm shaped by their individual AI policies. This article reviews existing AI systems in the banking sector with real-world examples. 1. What differentiates banking AI systems? International classification: HITL, HOTL, and HOOTL. 1) Human-in-the-Loop (HITL): Humans are directly involved in every system cycle. AI performs tasks or suggests options, but the final decision or approval of each step remains with the human. Example: HSBC, BNP Paribas. Europe is under immense pressure from the EU AI Act. Article 14 mandates that financial institutions develop high-risk AI systems that can be \"effectively controlled by natural persons.\" Case: Consumer loans and mortgages. How it works: AI calculates a credit score using hundreds of parameters, but if the model's confidence level is below 95%, the system must forward the application to a human loan officer. HSBC has established a special AI Review Committee to personally validate algorithm logic in disputed cases. HSBC surveys show that 62% of wealthy European investors demand a human advisor, not an algorithm, for final decisions. Read more",
+    "title": "Digital Amnesia: Why a Total Human Exclusion AI Strategy in Banks Might Lead to a Dead End?"
+  },
+  "https://habr.com/ru/articles/1078722/?utm_campaign=1078722&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 22:24:41 GMT",
+    "slug": "1078722",
+    "source_url": "https://habr.com/ru/articles/1078722/?utm_campaign=1078722&utm_source=habrahabr&utm_medium=rss",
+    "summary": "We are involved in implementing LLMs and agents in businesses, and one of the most common problems is how to process client data while complying with Federal Law No. 152-FZ on Personal Data. Let's figure it out!",
+    "title": "LLM, Personal Data, and Federal Law No. 152-FZ"
+  },
   "https://habr.com/ru/companies/1c/articles/1071340/?utm_campaign=1071340&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
     "published": "Thu, 03 Sep 2026 07:18:11 GMT",
@@ -102,6 +158,22 @@
     "source_url": "https://habr.com/ru/companies/1c/articles/1071340/?utm_campaign=1071340&utm_source=habrahabr&utm_medium=rss",
     "summary": "The AI landscape has recently undergone a significant paradigm shift. Previously, we discussed intelligent assistants automating narrow scenarios like documentation Q&A or support bots. Now, technology has advanced to a point where complex human actions can be automated using various planning tools, multi-step task execution, and more – all of which are now termed AI agents. Many companies are releasing their own solutions, and open-source options are also available. While there's a lot of hype around the topic, with many half-working prototypes, there are also scenarios where agents prove genuinely useful and are already helping solve business problems. Read more",
     "title": "AI Agents: What They Are, How They Work, and How Our Assistant's Agent Mode is Structured"
+  },
+  "https://habr.com/ru/companies/astrazeneca/articles/1078636/?utm_campaign=1078636&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 16:16:29 GMT",
+    "slug": "1078636",
+    "source_url": "https://habr.com/ru/companies/astrazeneca/articles/1078636/?utm_campaign=1078636&utm_source=habrahabr&utm_medium=rss",
+    "summary": "Pharma is an industry with long cycles, complex processes, and a high cost of error. This is especially evident in the drug development path: from identifying a promising molecule and preclinical studies to multiple phases of clinical trials, registration, and market launch. On average, developing one drug takes 10-15 years and costs around $1-2 billion, and of the candidates that reach clinical studies, nine out of ten do not reach registration. We won't write an article in the style of 'we implemented AI -> things got better.' There are already many such materials on Habr, and due to the prevalence and widespread cult of AI, they may not inspire trust. We are more interested in showing what is changing in the very logic of how pharma works, using specific examples. Read more",
+    "title": "How AI is Changing Pharma: AstraZeneca's Experience in Russia and the World"
+  },
+  "https://habr.com/ru/companies/avito/articles/1078084/?utm_campaign=1078084&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 14:29:12 GMT",
+    "slug": "1078084",
+    "source_url": "https://habr.com/ru/companies/avito/articles/1078084/?utm_campaign=1078084&utm_source=habrahabr&utm_medium=rss",
+    "summary": "Hello! My name is Vladislav Kozlov, and I am the lead of Business Security analysts at Avito. I want to share an interesting experience with LLM that allowed me to cheaply and quickly test my idea. I'll also tell you about an interesting clustering algorithm that my model and I came up with and implemented as a library. This article won't reveal the depths of vibe coding, the abyss of AI understanding, or the Truth. It's not about powerful LLM skills, but rather about the personal experience of cheap and fast idea prototyping. Its main goal is to inspire readers not to postpone their ideas, but to implement and share them. I also hope that the algorithm we created with the neural network will be useful to you. Read more",
+    "title": "From 'Someday' to a Working Prototype: How LLM Gave an Idea a Chance"
   },
   "https://habr.com/ru/companies/basis/articles/1077922/?utm_campaign=1077922&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
@@ -159,6 +231,14 @@
     "summary": "Two millennials who sold the world $850 billion worth of neural networks disguised as \"AI\" are looking at you from the cover of Time magazine. They try to look friendly, but honestly, it's the uncanny valley effect. The caption \"TRUST US\" in huge letters looks like a mockery, but no, they are serious. In the article under the cover, Altman and Brockman AGAIN promise to create \"real AI\" (what was there before?) - this time by the end of 2026. Do we believe them? In this article, I will explain why the loud news that \"AI agents\" \"hacked\" someone on their own initiative is simply the biggest PR campaign in history - and how it is supposed to cover up the biggest financial pyramid in history, based on a deliberately false interpretation of the concept of \"artificial intelligence.\" And also under the cut - why Richard Dawkins, who recognized the presence of consciousness in \"AI,\" did not go mad in his old age, but fell into the trap of his own scientism (and the influence of Daniel Dennett). Make yourselves comfortable. Read more",
     "title": "Skynet or Scamnet? How Corporations Sold Us a Fantasy of \"Artificial Intelligence\" for Billions"
   },
+  "https://habr.com/ru/companies/lukit_ru/articles/1078626/?utm_campaign=1078626&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 16:40:24 GMT",
+    "slug": "1078626",
+    "source_url": "https://habr.com/ru/companies/lukit_ru/articles/1078626/?utm_campaign=1078626&utm_source=habrahabr&utm_medium=rss",
+    "summary": "The first component took us two days to assemble, the fifteenth took fifteen minutes. All that appeared between them is the DESIGN.md file, a set of rules, and an understanding of where the neural network invents aliases that never existed in the system. Hello, Habr! My name is Ekaterina, I am a product designer and I am developing the Sova design system within the \"Lukomorye\" ecosystem. We needed to connect design, tokens, and code at the component level. To do this, we had to describe each component in detail: sizes, variants, states, paddings, colors. Doing this manually can take a long time, so we handed over the mechanical part to the neural network. It didn't work out the first time. Below is the entire process: how we exported components from Pixso, what we wrote in markdown files with rules and templates, and how we then checked that the neural network hadn't made anything up. Read more",
+    "title": "Component Tokens in 15 Minutes Instead of Two Days Using AI: Step-by-Step Process and Pitfalls"
+  },
   "https://habr.com/ru/companies/otus/articles/1067766/?utm_campaign=1067766&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
     "published": "Thu, 03 Sep 2026 16:40:46 GMT",
@@ -207,6 +287,14 @@
     "summary": "Hi! My name is Dmitry Gavrilov, and I'm the head of the analytics competence center at MWS. My team is integrating AI skills into the work of data analysts. We looked at a typical workday and realized that routine consumes up to 75% of an analyst's time. Can this be delegated to an AI agent without loss of quality? We tested this hypothesis on real tasks and got concrete results – I'm sharing them in this article. Read on",
     "title": "AI Agent to the Rescue: How We Automated Over 70% of Analyst Routine and Increased Team Efficiency"
   },
+  "https://habr.com/ru/companies/ru_mts/articles/1078518/?utm_campaign=1078518&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Sat, 05 Sep 2026 07:01:04 GMT",
+    "slug": "1078518",
+    "source_url": "https://habr.com/ru/companies/ru_mts/articles/1078518/?utm_campaign=1078518&utm_source=habrahabr&utm_medium=rss",
+    "summary": "AI accelerator manufacturers continue to increase the number of tensor cores and adopt shorter data formats like FP8 and FP4. Performance seems to be growing at an impressive rate, but there's a catch. Compute units need a constant supply of model weights and intermediate data. If memory can't keep up, the expensive chip with tens of billions of transistors literally idles, waiting for the next batch of data. Samsung plans to solve this with HBM5, aiming to double performance relative to HBM4E and increase power efficiency by 20%. The bandwidth of a single stack could approach 4 TB/s with a 4096-bit bus. Let's dive into the details.",
+    "title": "Tensor Cores Are No Longer Enough: Why AI Accelerators Will Hit a Memory Wall"
+  },
   "https://habr.com/ru/companies/ruvds/articles/1078196/?utm_campaign=1078196&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
     "published": "Thu, 03 Sep 2026 13:00:18 GMT",
@@ -214,6 +302,14 @@
     "source_url": "https://habr.com/ru/companies/ruvds/articles/1078196/?utm_campaign=1078196&utm_source=habrahabr&utm_medium=rss",
     "summary": "This article compares leading subscription models from Anthropic, OpenAI, and Google for literary translation, editing, and verification. Specifically, we compare Google (gemini-3.7-flash, 3.8, and gemini-3.1-pro), Anthropic (claude-opus-5), and OpenAI (gpt-5.6-sol) to see who translates cleaner, edits more carefully, and can be trusted to determine if an error is by the author or the translator. All comparisons were conducted within the open-source BookTrans pipeline, previously discussed on Habr. Read more",
     "title": "Comparing Opus 5, Sol 5.6, Gemini Flash 3.7, 3.8, and Pro 3.1 in Literary Translation and Editing"
+  },
+  "https://habr.com/ru/companies/sberbank/articles/1076666/?utm_campaign=1076666&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 09:41:27 GMT",
+    "slug": "1076666",
+    "source_url": "https://habr.com/ru/companies/sberbank/articles/1076666/?utm_campaign=1076666&utm_source=habrahabr&utm_medium=rss",
+    "summary": "Hello, Habr! My name is Alexey Vasiliev, and I am the team lead of the \"Recommender Systems and Personalization\" team at Sber AI Lab, Sber's Center for Practical Artificial Intelligence. We conduct research in the field of recommendations, develop new models, and, of course, compare our results with those of colleagues and other researchers. We regularly encounter situations where results claimed in a scientific paper or obtained from another team cannot be reproduced, even though the key parameters of the pipeline are identical. In this article, my colleague Anna Volodkevich and I will share our experience analyzing such discrepancies, which led us to develop the SplitLight framework. When the results of a scientific paper or the success of another team cannot be reproduced, people usually start by looking for bugs in the model implementation: they examine the architecture, loss function, and negative sampling method. While some discrepancies are indeed due to these factors, our practical experience shows that the data preparation procedure often has a greater impact on the final result of comparing recommender models. For example, the statement from a paper \"Zvuk dataset, global temporal split with a quantile of 0.9\" does not specify which filters and aggregations were applied, how events with identical timestamps and repeated interactions were handled, whether cold objects were removed, what data was fed to the model, and based on which events metrics were calculated. Therefore, two pipelines with the same dataset and the same split name might be evaluating different problem formulations. This hinders experiment reproducibility and comparison of results across works. Read more",
+    "title": "Preparing a Dataset for Offline Evaluation of Recommender Models: What to Check Before Running Experiments"
   },
   "https://habr.com/ru/companies/svoi_ru/articles/1078124/?utm_campaign=1078124&utm_source=habrahabr&utm_medium=rss": {
     "model": "gemini-2.5-flash-lite",
@@ -246,5 +342,13 @@
     "source_url": "https://habr.com/ru/companies/vk/articles/1078192/?utm_campaign=1078192&utm_source=habrahabr&utm_medium=rss",
     "summary": "Hi! I'm Stepan Malkevich, head of the VKontakte feed recommendation team (AI VK). Over the past months of 2026, feed time has increased by 11%. Behind these numbers is a series of changes, each contributing to metric growth. I'll now explain what we updated and what the results were. Read more",
     "title": "From Updated Ranker to Bresenham's Algorithm: What Led to a 11% Increase in VK Feed Time in 2026"
+  },
+  "https://habr.com/ru/companies/yandex/articles/1078580/?utm_campaign=1078580&utm_source=habrahabr&utm_medium=rss": {
+    "model": "gemini-2.5-flash-lite",
+    "published": "Fri, 04 Sep 2026 13:15:34 GMT",
+    "slug": "1078580",
+    "source_url": "https://habr.com/ru/companies/yandex/articles/1078580/?utm_campaign=1078580&utm_source=habrahabr&utm_medium=rss",
+    "summary": "On Android devices, you can choose a default assistant, much like a browser. Once selected in settings, you can invoke it with a system gesture over any app. Convenient. You might think that the chosen assistant can now see everything on your phone and do whatever it wants... Not at all. When installed, Android grants an app only basic permissions. Access to advanced features requires separate user permission, and some functions are entirely unavailable to regular third-party apps. My name is Vanya, I lead the Android development team for Alice's SDK and am the tech lead for the default assistant project. Today, we'll explore these boundaries using Alice AI as an example. Read more",
+    "title": "What the Default Assistant on Android Can Do - Using Alice AI as an Example"
   }
 }

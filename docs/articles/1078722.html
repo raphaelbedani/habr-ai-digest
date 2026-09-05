@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM, Personal Data, and Federal Law No. 152-FZ</title>
+  <meta name="description" content="We are involved in implementing LLMs and agents in businesses, and one of the most common problems is how to process client data while complying with Federal Law No. 152-FZ on Personal Data. Let&#x27;s figure it out!">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LLM, Personal Data, and Federal Law No. 152-FZ</h1>
+    <p>We are involved in implementing LLMs and agents in businesses, and one of the most common problems is how to process client data while complying with Federal Law No. 152-FZ on Personal Data. Let&#x27;s figure it out!</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078722/?utm_campaign=1078722&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Fri, 04 Sep 2026 22:24:41 GMT
+    </p>
+  </header>
+  <main>
+<div><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/94c/955/a07/94c955a075da7d24abefa2f0c14a9c48.jpeg"/></figure><p>We are involved in implementing LLMs and agents in businesses, and one of the most common problems is how to process client data while complying with Federal Law No. 152-FZ on Personal Data.</p><p>Let's figure it out!</p><p>Two disclaimers right away:</p><ul><li><p>This is an analysis for engineers and product managers, not legal advice. Consult a <s>doctor</s> specialized lawyer before applying.</p></li><li><p>The field is moving fast, and two changes occurred this summer. Note how much time has passed since the publication date of this article.</p></li></ul><h3>What is Personal Data Anyway</h3><blockquote><p>Personal data is any information relating to an identified or identifiable individual (personal data subject) (para. 1, Art. 3 of Federal Law No. 152-FZ) (<a href="https://www.consultant.ru/document/cons_doc_LAW_61801/4f41fe599ce341751e4e34dc50a4b676674c1416/">para. 1, Art. 3 of Federal Law No. 152-FZ</a>)</p></blockquote><p>Essentially, it's any information about a person who can be identified: a phone number, a job title, a city. The criterion is the identifiability of the subject.</p><p>Of course, the definition is very flexible, and practice has not yet fully formed.</p><p>Even government agencies sometimes argue about what constitutes personal data and what does not. For example, regarding taxpayer identification numbers (INN):</p><p>The Ministry of Digital Development, Communications and Mass Media believes that the INN "allows the identification of the personal data subject without additional information," while the Ministry of Finance disagrees: "The INN is not information that is part of the list of personal data."</p><p>Courts also have very different interpretations of what is personal data and what is not.</p><p>In general, there are many different examples, but we have decided for ourselves that the safest approach is to consider almost everything as personal data: names, identifiers, email addresses, and so on. This reduces the risk associated with the broad interpretation and the potential inconsistency of court decisions.</p><h3>How to Properly Process Personal Data</h3><p>If you collect personal data, then you are a personal data operator.</p><p>In order to start collecting and processing this data, you must, first, notify Roskomnadzor (RKN), second, you need a basis for processing this data (e.g., consent, contract fulfillment, etc.), and third, the personal data must be localized within the territory of Russia. We will not dwell on this, as the article is not about it.</p><p>Suppose you have fulfilled all these requirements and now want to use an LLM to process client data.</p><p>In the law, this is called processing personal data by order of the operator. To do this, you need to formalize the order either as a separate contract or as part of a regular contract or offer.</p><p>Many Russian services where user personal data is usually sent have such an order. For example, <a href="https://www.bitrix24.ru/about/dpa_pers.php">Bitrix24</a> does.</p><p>If the LLM servers are located abroad, everything becomes significantly more complicated.</p><p>In the law, this is called cross-border transfer of personal data. To carry out such a transfer, you need to separately notify RKN. At the same time, RKN divides countries into adequate and inadequate. For adequate countries, it is enough to notify and you can transfer immediately. For "inadequate" countries, only after 10 days, and even then, if RKN does not prohibit it.</p><h3>How to Legally Use LLMs in the End?</h3><p>There are several options here.</p><p><strong>Directly Abroad: Claude, OpenAI, DeepSeek.</strong></p><p>Here, we see no legal way to process users' personal data. Even if you are lucky and the LLM is hosted in an adequate country, you cannot properly formalize the processing order. This is the main blocker, in addition to other "inconveniences."</p><p><strong>Russian Models.</strong></p><p>Everything depends on the company's policy, and you need to look at this carefully. For example, Yandex allows the processing of personal data, but Sber's GigaChat does not: "the service is not intended for sending requests containing personal data of third parties or the user themselves" [<a href="https://developers.sber.ru/docs/ru/policies/gigachat/agreement">https://developers.sber.ru/docs/ru/policies/gigachat/agreement</a>].</p><p><strong>Open-source Models in Russian Cloud.</strong></p><p>You also need to look at the service's policy. Yandex, for example, provides API access to DeepSeek (albeit several times more expensive than the original), where personal data can be processed.</p><p><strong>Open-source Models on Your Own or Rented Hardware (in Russia).</strong></p><p>Everything is fine.</p><p>Important disclaimer. The personal data law also provides for the need to delete this personal data in certain cases. Therefore, when using a public LLM, you should always disable logging and prohibit the service from training on your data.</p><h3>Anonymization</h3><p>This is the main technique we use, and I recommend using it always, except in cases of extreme necessity, even if you are working with Russian models.</p><p>The idea is simple: ensure that personal data does not go into the model.</p><p>I'll show you with two examples.</p><p>First example: you need to correct a contract that contains the client's personal data. To do this, replace all their data such as full name, INN, passport number with placeholders like NAME, INN and send it to the LLM. When you receive the response, replace them back.</p><p>Second example. There is a table:</p><pre><code>user_id, name, email, phone, feedback</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>And you want to write to users who have left you bad feedback.</p><p>Before sending this table to the LLM, you need to remove the columns containing personal data. And then restore them using user_id.</p><p>There is a problem here, of course: the system cannot work with 100% accuracy. This means that you reduce the probability and amount of personal data transferred, but not to zero.</p><h3>How to Anonymize?</h3><p><strong>Option One - On Your Own.</strong></p><p>You can write a solution from scratch that best suits your data, or you can use an open-source tool like Presidio.</p><p><strong>Option Two - Intermediaries.</strong></p><p>There are services that proxy your requests to LLMs, are located in Russia themselves, have a processing order formalized with them, and they remove personal data themselves when proxying requests. Examples: <a href="https://kodikrouter.ru/legal/152-fz">KodikRouter</a>, <a href="https://jaycopilot.com/help/jayguard/">Jaycopilot</a>, and others.</p><p>It is important to ensure that the service does not simply proxy your data to a foreign LLM, but itself complies with 152-FZ and has an anonymization function.</p><h3>Conclusion</h3><ul><li><p>No personal data at all - you can send it anywhere, including any foreign models.</p></li><li><p>Data is anonymized - the risk is significantly lower, but it exists.</p></li><li><p>Unanonymized personal data - only the Russian infrastructure: Russian cloud with a formalized order or your own hardware.</p></li></ul><hr/><p>If you want to delve deeper into how to use LLMs and AI agents for productivity, work, business, and everyday life, subscribe to our <a href="https://t.me/robotsatwork">Telegram channel "Robots are Working."</a></p></div>
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

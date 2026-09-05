@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What the Default Assistant on Android Can Do - Using Alice AI as an Example</title>
+  <meta name="description" content="On Android devices, you can choose a default assistant, much like a browser. Once selected in settings, you can invoke it with a system gesture over any app. Convenient. You might think that the chosen assistant can now see everything on your phone and do whatever it wants... Not at all. When instal">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>What the Default Assistant on Android Can Do - Using Alice AI as an Example</h1>
+    <p>On Android devices, you can choose a default assistant, much like a browser. Once selected in settings, you can invoke it with a system gesture over any app. Convenient. You might think that the chosen assistant can now see everything on your phone and do whatever it wants... Not at all. When installed, Android grants an app only basic permissions. Access to advanced features requires separate user permission, and some functions are entirely unavailable to regular third-party apps. My name is Vanya, I lead the Android development team for Alice&#x27;s SDK and am the tech lead for the default assistant project. Today, we&#x27;ll explore these boundaries using Alice AI as an example. Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/companies/yandex/articles/1078580/?utm_campaign=1078580&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Fri, 04 Sep 2026 13:15:34 GMT
+    </p>
+  </header>
+  <main>
+<div><p>On Android devices, you can choose a default assistant, much like a browser. Once selected in settings, you can invoke it with a system gesture over any app. Convenient.</p><p>You might think that the chosen assistant can now see everything on your phone and do whatever it wants... Not at all. When installed, Android grants an app only basic permissions. Access to advanced features requires separate user permission, and some functions are entirely unavailable to regular third-party apps.</p><p>My name is Vanya, I lead the Android development team for Alice's SDK and am the tech lead for the default assistant project. Today, we'll explore these boundaries using Alice AI as an example.</p><h2>What Changes After Selecting a Default Assistant</h2><p>Not just any chatbot app can become an Assistant. Developers must add support for this role, and the user must manually select the app as the default assistant in system settings. The app can help open the necessary settings screen, but only the user can choose the assistant.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/802/18d/3cd/80218d3cd664f3ef667287d622c4cb35.png"/></figure><p>Along with the role, Android can grant the assistant several technical permissions if the app has declared them in its manifest. For example, in Android 17, SYSTEM_ALERT_WINDOW is tied to the role, allowing the assistant to display its window over other apps, and EXECUTE_APP_ACTION, to access actions that third-party apps have allowed assistants to use.</p><p>These permissions by themselves do not allow access to the microphone, camera, contacts, or geolocation. They also do not give the assistant free rein to read data from other apps. Other assistant capabilities depend on different Android mechanisms. Let's examine what information the system passes about the open screen, what permissions the user grants manually, and how the assistant interacts with other apps.</p><h2>What the Assistant Learns About the Open Screen</h2><p>Assigning Alice AI as the default assistant does not grant it constant screen access. Android collects screen context only after the user explicitly opens the assistant over a specific app screen.</p><p>At this moment, Android can transfer the interface structure and visible text (AssistStructure), data that the open app has prepared for the assistant (AssistContent), and a screenshot. This is not a video stream or access to the app's internal data, but rather information about the state of the open screen.</p><p>The open app can restrict the information transferred. For example, a window with the FLAG_SECURE flag prevents a screenshot from being sent. The assistant cannot independently read the content of any screen, monitor transitions between apps, or obtain screen context in the background. By the way, an important clarification: on the lock screen, Android hides notifications before opening the assistant. Therefore, you cannot read them through the screen context either.</p><p>Screen context is only one source of data. Let's explore how other access is granted in the next section.</p><h2>What Permissions Alice AI Needs</h2><p>Even if all access requests are denied, Alice AI will remain the default assistant: you can still ask it questions via text. Only functions requiring these permissions will be unavailable.</p><p>For an app to truly gain access to a resource, Android checks four conditions:</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/da2/c6b/798/da2c6b798849ad18b6b412385a4339bf.png"/></figure><p>For example, the CAMERA string in the manifest only means that the app can request camera access. The camera will become available to Alice AI after the user confirms the system prompt. If denied, Alice AI will remain the default assistant but will not be able to capture images from the camera.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/4a8/10a/8a9/4a810a8a9b102dcc7a9e3678dc9cbf93.png"/></figure><p>Here are the permissions Alice AI requires that necessitate user action on modern Android versions:</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/42e/b41/038/42eb410386a44181aa06dbd61043a989.png"/></figure><p>Not all accesses confirmed by the user can be requested via a standard pop-up window. Some are enabled on separate system settings screens.</p><p>For instance, in the standard location request, the user chooses which coordinates to grant Alice AI access to: approximate (ACCESS_COARSE_LOCATION) or precise (ACCESS_FINE_LOCATION). Starting with Android 11, permission to work with location in the background (<a href="https://developer.android.com/reference/android/Manifest.permission#ACCESS_BACKGROUND_LOCATION">ACCESS_BACKGROUND_LOCATION</a>) is granted separately. Alice AI can open the relevant settings screen, but the user must select the "Allow all the time" option. Being the default assistant changes nothing here.</p><figure><img alt=" " loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f96/5fe/38d/f965fe38d686f9a89273dc344e0ead4d.png" title=" "/><div><figcaption> </figcaption></div></figure><p>The command "Call Sasha" consists of two operations. READ_CONTACTS allows finding Sasha's number in the address book, and <a href="https://developer.android.com/reference/android/Manifest.permission#CALL_PHONE">CALL_PHONE</a> allows initiating a standard phone call immediately. This won't work with emergency numbers. For direct dialing without confirmation, the system permission <a href="https://developer.android.com/reference/android/Manifest.permission#CALL_PRIVILEGED">CALL_PRIVILEGED</a> is required, which is unavailable to regular third-party apps. It cannot be granted to Alice AI in settings, even if it's the default assistant. Alice AI can only open the dialer app with the correct number, and the user must confirm the call.</p><p>The POST_NOTIFICATIONS permission on Android 13+ allows Alice AI to display its own notifications. It does not grant access to other apps' notifications, and Alice AI does not currently receive them.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c19/e70/d29/c19e70d2962272aedaace0a71ceff535.png"/></figure><h2>How the Assistant Executes Commands in Other Apps</h2><p>An assistant can execute a command in another app only if that app provides a suitable interaction method. Being the default assistant does not create a universal remote for all installed programs.</p><p>For common actions in Android, there are Intents—a standard way to pass a request to another app. For example, via ACTION_SET_ALARM, the assistant can pass the time for setting an alarm to the clock app. The clock app will either show the user a pre-filled form or create the alarm directly—this depends on the system app's implementation.</p><p>Universal intents are not available for everything. For instance, for Google Assistant to perform an action within a third-party app, its developer must describe that action via <a href="https://developer.android.com/develop/devices/assistant/overview">Google App Actions</a>. Third-party assistants do not automatically get App Actions—even after being set as default. First, it must declare <a href="https://developer.android.com/reference/android/Manifest.permission#EXECUTE_APP_ACTION">EXECUTE_APP_ACTION</a> in its manifest, and only then can Android grant the permission along with the role.</p><p>In Android 16, a more general mechanism, <a href="https://developer.android.com/ai/appfunctions">AppFunctions</a>, was introduced. Its public API is still experimental, and each app decides independently which functions to allow for use.</p><p>Another mechanism is control through interface elements. This is how <a href="https://developer.android.com/guide/topics/ui/accessibility/service">Accessibility Services</a> work: they can read available elements on the screen and perform clicks. This is not hidden access: the user manually enables such a service for a specific app on a separate system settings screen, and Android warns about its capabilities.</p><p>The use of AccessibilityService is monitored separately by <a href="https://support.google.com/googleplay/android-developer/answer/10964491">Google Play</a>. The developer must declare the use of the service and pass a review. If the app is not an accessibility tool, it must explain what data it receives and why, and then request explicit user consent.</p><p>Simply put, an assistant can control another app only through a mechanism provided by Android or the app itself: a standard intent, a published function, or a manually enabled accessibility service. Alice AI controls Yandex Music and Yandex smart home devices through its own product integrations, and sets timers and alarms via Android intents.</p><h2>Why Some Assistant Commands Are Unavailable</h2><p>The first limitation is the <a href="https://developer.android.com/guide/components/fundamentals">Android sandbox</a>. Apps run in isolation, so the assistant role does not grant access to the internal data of banking apps or messengers. For exchange, a provided channel is needed: a system intent, an exposed app component, or a service API.</p><p>The second limitation is that some system permissions are unavailable to regular apps. Designating an app as the default assistant does not make it a system app or grant it such permissions.</p><p>The third limitation is support from the other application. The assistant cannot execute a command if the app does not accept the standard intent, does not publish the required function, and does not provide its own API.</p><p>These limitations cannot be removed by selecting the assistant as default or by toggling a setting. They are defined by the Android architecture itself and the capabilities of other applications.</p><h2>What's the Result</h2><p>So, what does choosing a default assistant give you? Android will open the selected app with a system gesture and grant it access to available information about the current screen.</p><p>Alice AI remains a regular app installed by the user. Access to the microphone, camera, geolocation, and contacts is granted separately by the user. Without these permissions, Alice AI will continue to function as an assistant—you can still ask it questions via text. Background geolocation is enabled on a special system screen, and controlling other apps requires mechanisms provided by Android or the apps themselves.</p><p>Some system capabilities remain inaccessible to regular apps, no matter how many permissions they are granted. Being set as default makes interacting with Alice AI more convenient, but it does not change Android's security model: the assistant does not gain full access to the smartphone.</p></div>
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

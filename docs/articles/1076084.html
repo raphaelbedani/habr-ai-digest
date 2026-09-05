@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Fed 60 Million Tokens to Stealth/Ox-Alpha, or the Story of How 127 n8n Nodes Were</title>
+  <meta name="description" content="In the final part of my previous article, I promised a breakdown of the response generation loop with hybrid data extraction (LLM-tools + regex). However, I&#x27;m slightly altering plans and switching to a different topic – driven by a practical engineering experiment. I&#x27;ll try to be brief and">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>How I Fed 60 Million Tokens to Stealth/Ox-Alpha, or the Story of How 127 n8n Nodes Were</h1>
+    <p>In the final part of my previous article, I promised a breakdown of the response generation loop with hybrid data extraction (LLM-tools + regex). However, I&#x27;m slightly altering plans and switching to a different topic – driven by a practical engineering experiment. I&#x27;ll try to be brief and to the point.:-)</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1076084/?utm_campaign=1076084&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Fri, 04 Sep 2026 17:21:22 GMT
+    </p>
+  </header>
+  <main>
+<div><blockquote><p><em>Disclaimer: The article mentions Meta, an organization recognized as extremist and banned in the Russian Federation. This article is not a promotion or advertisement for courses/self-promotion, etc. All logs, numbers, and screenshots are from real runs on a test account. </em></p></blockquote><p>Hello everyone! In the conclusion of my <a href="https://habr.com/ru/articles/1076972/">previous article</a>, I promised a breakdown of Reasoning Lock – that very bug where a reasoning model consumes tokens and responds with emptiness. The breakdown is ready, and the fixes for the client's workflow are being implemented. I want to release it with live metrics after a few days of production monitoring to see how the changes perform. While the clock is ticking, I'm publishing a mini-story from the backlog that matured back in the last days of August – during the height of the buzz around the mysterious <em>stealth model</em>. The hype has subsided, but the experiment is no less valuable: in three days, the stealth model "vibed" a workflow of 127 nodes that actually interacts with APIs, generates media, and publishes Reels. Below, I'll show the architecture, code, an honest list of the model's and my own mistakes, and the experiment's economics. I'll try to be brief and to the point.)</p><p>The goal, so to speak, of the experiment is <strong><em>load testing a new LLM as a coder</em></strong> on a complex distributed pipeline: five external APIs, binary streams, three dozen branching conditions, asynchronous polling – all in one workflow! Currently, there's a boom in the Western market for autonomous setups like <strong><em>"scraping-media generation-autoposting"</em></strong>. I don't create content myself – I'm interested in pipelines and fault tolerance. But the task is a perfect fit for an ideal technical specification!)</p><p>And it so happened that from August 20th to 25th, OpenRouter offered free access to the mysterious model <strong><em>stealth/ox-alpha.</em></strong> It was later de-anonymized – OpenRouter's FAQ officially confirms it: it's <strong><em>Z.ai, GLM 5.3 Flash</em></strong> (z-ai/glm-5.3-flash in the Cline selector). Here's the breakdown for it: 1M token context, native multimodality (text, images, video input), a claim from Z.ai: "<em>efficient coding and long-horizon agent tasks</em>" – you've all read and know about it). The release was on August 26th, meaning the stealth window gave a week of playtime before the official announcement. Large context, zero cost. I opened VS Code, launched Cline, and fed it the technical specification for a full-fledged media pipeline in n8n. </p><p>In three days (August 21st to 23rd), <strong>60.9 million tokens</strong> were consumed – 85.3% of them were cache hits, and the final bill at the blended price of $0.07/1M was about <strong>$4</strong>. The essence is that the output is a workflow with <strong>127 nodes</strong> (initially 156, later refactored) that actually interacts with APIs, generates media, and publishes Reels. Below are the architecture, code, an honest list of the model's and my own mistakes, and the experiment's economics. </p><p><strong>Technical Specification: Not "Create hype reels for me," but "You are a senior n8n solutions architect"</strong></p><p>Everyone understands that an LLM is not a magician or a psychic. A simple rule: the more precise the input, the fewer hallucinations on the output. Therefore, in Cline, I didn't write "invent an autoposting system with Telegram alerts," but a maximally (it seems) structured brief with iterations. A shortened version of the actual prompt became this:</p><pre><code>ROLE
+You are a senior n8n solutions architect. You produce production-ready,
+importable n8n workflow JSON. You never invent API parameters or node
+fields; when unsure, you say so explicitly.
+
+PROJECT CONTEXT
+BACKLOG: "AutoContent-Factory v1.0" — an autonomous pipeline
+for AI trend analysis, multimedia generation, and Instagram autoposting
+based on self-hosted n8n.
+
+PIPELINES:
+1 — competitor parsing (ScrapeCreators API), virality formula
+1.5 — semantic filter (LLM-reranker, relevance threshold)
+2 — AI dispatcher (strict JSON: scenario/video prompt/caption)
+3 — multimodal generation (video/voice/cover via OpenRouter)
+5 — autoposting (Instagram Graph API)
+
+API FACTS (from official docs)
+- 1 credit = 1 request; cache hits = 0 credits
+- GET /v1/instagram/user/reels — metrics WITHOUT caption
+- GET /v2/instagram/media/transcript — 10–30 s, timeout &gt;= 60 s
+- HTTP 402 = out of credits; 5xx = transient
+
+RULES
+One contour per message. No secrets. Defensive JS (try/catch,
+null-checks). If ambiguous — ask ONE clarifying question.</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>I'll highlight the key techniques that saved my nerves:</p><ul><li><p>Role instead of a request. The "Senior Architect" role changes the generation tone: the model writes defensively, not conversationally – simplified. </p></li><li><p>Explicitly forbidden to invent parameters. If unsure, say so and add to the "VERIFY MANUALLY" list. </p></li><li><p>Iterations by pipeline. One pipeline per message – the model doesn't get confused by dependencies. </p></li><li><p>Output Contract = One JSON block + import instructions + list of questionable parameters.</p></li></ul><p>The only thing I forgot to provide the model with, at the very end of assembling the finished workflow, was detailed technical documentation. That would have made the article more detailed and easier to write!:‑)</p><figure><img alt=" First steps: stealth/ox-alpha is churning in the console... writing JSON config for nodes " loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/da0/e77/c3b/da0e77c3b5864b7c6bb01e88a0f0d579.png" title=" First steps: stealth/ox-alpha is churning in the console... writing JSON config for nodes "/><div><figcaption>First steps: stealth/ox‑alpha is churning in the console... writing JSON‑config for nodes </figcaption></div></figure><p><strong>Workflow Architecture: 5 Pipelines, 127 Nodes</strong></p><figure><img alt=" In the process of assembly: about 2/3 of the finished workflow on the canvas " loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f81/46b/747/f8146b7471df47dc25c0ccd4eafdbbdf.png" title=" In the process of assembly: about 2/3 of the finished workflow on the canvas "/><div><figcaption>In the process of assembly: about 2/3 of the finished workflow on the canvas </figcaption></div></figure><p>Honest workflow arithmetic, so no one has to recalculate for me: 127 = 113 nodes in five pipelines (23 + 17 + 17 + 37 + 19) + 2 input triggers (Schedule and Manual) + 4 disabled stubs for future iterations + 8 documentation stickers. The number of working nodes is accordingly 115: 113 pipeline nodes + 2 triggers. I'll explain each pipeline in more detail:</p><p><strong><em>1st Pipeline: Let's call it "Reconnaissance" (23 nodes)</em></strong></p><p>The scheme is as follows: Schedule (24h) – list of competitors – Reels via ScrapeCreators – virality math: <code>views &gt; avg × 2.5</code> – tag <code>TRENDING</code> – for trending posts, fetch caption (/v1/instagram/post) and transcript (<code>/v2/instagram/media/transcript</code>, timeout 60s; null – caption-only). For now, the competitor list consists of static test handles; for real implementation, desired niches will be substituted.</p><p><strong><em>Pipeline 1.5: Let's call it "Semantic Filter" (17 nodes)</em></strong></p><p><code>LLM-reranker</code> evaluates relevance in the chosen niche (I chose automation in n8n) on a scale of 0–1. For the reranker role, I chose <code>Qwen3 Reranker 8B</code> via chat/completions. Its prompt includes a rubric with live examples: "<em>Building an LLM Agent in n8n for Request Processing</em>" = 0.95 (core niche), "How to Set Up ChatGPT" = 0.75 (AI productivity), AI in general = 0.5–0.69, related (SaaS business) = 0.2–0.49, personal vlogs = 0.0–0.19. Anything below the threshold goes to the dead end <code>Drop: Below Threshold</code>. Without this pipeline, this "factory" would generate content about a randomly popular personal vlog of a content creator.</p><p><strong><em>2nd Pipeline: AI Dispatcher (17 nodes)</em></strong></p><p>The model doesn't copy someone else's post! Why churn out similar content. It "extracts the DNA of virality" (hook, trigger, format, call to action) and creates an original idea. Output – a strict JSON schema: <code>angle, hooks, voice_script</code> (120–160 characters), <code>video_prompt, instagram_caption</code>. A valid draft falls into Google Sheets with the status <code>DRAFT.</code></p><p><strong><em>3rd Pipeline: Media Workshop (37 nodes)</em></strong></p><p>Video: <code>seedance-2.0-mini</code> with a fallback to <code>veo-3.1-lite</code>, asynchronous polling (Wait 10s × 20 attempts). Voice: TTS outputs <strong>raw PCM</strong>, which is converted to WAV on the fly. The configuration in "Clean Voice Script" explains another thing: the flags <code>ARCHIVE_TO_DRIVE=false</code> and <code>MUSIC_ENABLED=false</code> – this is an economy config: seedance-2.0-mini/ 480p/ 5s with a fallback to veo-3.1-lite. Cover: image generation with a neon tech vibe. Everything with retries, warnings, and statuses <code>MEDIA_READY</code> / <code>MEDIA_FAILED</code>. </p><p><strong><em>Final Pipeline: Distribution (19 nodes)</em></strong></p><p>Inside – another surprise: video and voice merging via ffmpeg (<code>Write -Exec -Read in /tmp</code>). Voice is optional: no voice = video goes as is under the key <code>final_mp4</code>. Plus, the Instagram container has its own polling <code>FINISHED - Wait 5s * 12.</code> </p><p>Google Drive (upload + share publicly) – Instagram Graph API (REELS container – publish) – permalink – update Sheets – report to Telegram.</p><p><strong>Status Dispatcher on Google Sheets </strong></p><p>To prevent the 127 nodes from getting confused about the stage of each video, I didn't build a complex database but created a simple status dispatcher directly in Google Sheets.</p><figure><img alt="Each draft goes through a chain of statuses DRAFT - MEDIA_READY - PUBLISHED (or MEDIA_FAILED / PUBLISH_FAILED), update - by source_url" loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/efe/f3d/5db/efef3d5db62afc33085660bc69fa04a3.png" title="Each draft goes through a chain of statuses DRAFT - MEDIA_READY - PUBLISHED (or MEDIA_FAILED / PUBLISH_FAILED), update - by source_url"/><div><figcaption>Each draft goes through a chain of statuses DRAFT — MEDIA_READY — PUBLISHED (or MEDIA_FAILED / PUBLISH_FAILED), update — by source_url</figcaption></div></figure><p><strong>Refactoring for Stability: From 156 to 127 Nodes</strong></p><p>The first version was built on the principle of "if it builds the workflow, just make it work" and ballooned to 156 nodes. Minus 29 over a couple of evenings:</p><ul><li><p>duplicate error branches were consolidated into a single pattern <code>Failed? → 402? → alert / fail-open</code>;</p></li><li><p>To be honest: the list includes a `disabled` placeholder node `Search google`, which the stealth model planned "for the future" and which I didn't remove. Let it stay.)</p></li><li><p>all media configurations and models were moved to a single <code>Code node (Clean Voice Script)</code> instead of scattered <code>Set nodes;</code> </p></li><li><p>intermediate handoff stubs from older architecture versions were removed.</p></li></ul><p><strong>Node Type Breakdown:</strong></p><div><div><table><tbody><tr><td><p><strong>Type</strong></p></td><td><p><strong>Count</strong></p></td><td><p><strong>Purpose</strong></p></td></tr><tr><td><p>IF (conditions)</p></td><td><p>30</p></td><td><p>errors, 402, statuses, binary presence</p></td></tr><tr><td><p>Code (JS)</p></td><td><p>28</p></td><td><p>parsing, normalization, PCM to WAV, configs</p></td></tr><tr><td><p>Telegram</p></td><td><p>12</p></td><td><p>alerts for every critical failure</p></td></tr><tr><td><p>HTTP Request</p></td><td><p>11</p></td><td><p>all external calls</p></td></tr><tr><td><p>NoOp</p></td><td><p>11</p></td><td><p>handoff points between pipelines + drop dead ends</p></td></tr><tr><td><p>Sticky Note</p></td><td><p>8</p></td><td><p>documentation directly on the canvas</p></td></tr><tr><td><p>LangChain</p></td><td><p>6</p></td><td><p>2 agents + 2 models + 2 structured parsers</p></td></tr><tr><td><p>Google Sheets</p></td><td><p>4</p></td><td><p>statistics: append + 3 updates</p></td></tr><tr><td><p>StopAndError</p></td><td><p>4</p></td><td><p>hard stop on 402</p></td></tr><tr><td><p>Triggers</p></td><td><p>3</p></td><td><p>Manual, Schedule, ExecuteWorkflow trigger (disabled)</p></td></tr><tr><td><p>Disabled Stubs</p></td><td><p>3</p></td><td><p>2 scrapeCreators nodes, Call “Hunter_Media”</p><p><strong><em>*P.S. I named the workflow Hunter content = hence the pipeline names</em></strong></p></td></tr><tr><td><p>Set</p></td><td><p>2</p></td><td><p>final outputs of pipelines 1 and 1.5</p></td></tr><tr><td><p>Google Drive</p></td><td><p>2</p></td><td><p>upload + share publicly</p></td></tr><tr><td><p>SplitInBatches</p></td><td><p>1</p></td><td><p>loop over handles</p></td></tr><tr><td><p>Wait </p></td><td><p>1</p></td><td><p>video polling (10s)</p></td></tr><tr><td><p>Instagram (community)</p></td><td><p>1</p></td><td><p>Reels publishing</p></td></tr></tbody></table></div></div><p>It's clear that more than a third of the nodes are for protective logic. This is, in principle, the conscious cost of autonomy.</p><p><strong>Now, as they say, the engineering guts</strong></p><p><strong><em>The Gem: PCM to WAV on the Fly</em></strong></p><p>The TTS model outputs raw PCM (24 kHz, 16-bit, mono) without a container – neither n8n nor Instagram understands such a stream. The model generated a Code node that attaches the correct RIFF header:</p><pre><code>function wavHeader(len) { 
+  const sr = 24000, ch = 1, bits = 16;
+  const b = Buffer.alloc(44);
+  b.write('RIFF', 0); b.writeUInt32LE(36 + len, 4); b.write('WAVE', 8);
+  b.write('fmt ', 12); b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20);
+  b.writeUInt16LE(ch, 22); b.writeUInt32LE(sr, 24);
+  b.writeUInt32LE(sr * ch * bits / 8, 28); b.writeUInt16LE(ch * bits / 8, 32);
+  b.writeUInt16LE(bits, 34); b.write('data', 36); b.writeUInt32LE(len, 40);
+  return b;
+}
+
+const pcm = await helpers.getBinaryDataBuffer(i, 'voice_mp3');
+const wav = Buffer.concat([wavHeader(pcm.length), pcm]);
+bin.voice_mp3 = await helpers.prepareBinaryData(wav, 'voice.wav', 'audio/wav');</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>I double-checked every byte: the 44-byte header – all calculated, not hardcoded, and using n8n's correct binary helpers, not naive <code>item.binary.data</code> </p><p><strong><em>Static Data: Accumulator for the Loop Without Duplicates</em></strong></p><p>Trend collection logic: loop through handles in the niche, carefully collect data in the workflow's <code>static data</code>, and at the end, read this buffer, clean it, and perform final deduplication by URL:</p><pre><code>// inside the loop:
+const sd = $getWorkflowStaticData('global');
+sd.acf_trending = sd.acf_trending || [];
+sd.acf_trending.push(...$input.all().map(i =&gt; i.json));
+
+// after the loop:
+const rows = sd.acf_trending || [];
+sd.acf_trending = [];               // state does not leak between runs
+const seen = new Set();
+return rows.filter(r =&gt; {
+  const key = r.post_url || r.shortcode;
+  if (seen.has(key)) return false;
+  seen.add(key); return true;
+}).map(r =&gt; ({ json: r }));</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p><strong><em>402 is Not Equal to 5xx: Two Different Service Deaths</em></strong></p><p>The system distinguishes between "service is temporarily down" and "ran out of credits." A universal check that the model stamps in every error branch:</p><pre><code>const e = $json.error || {};
+const sc = Number($json.statusCode || e.statusCode || e.status || 0);
+const msg = String(e.message || '');
+const is402 = sc === 402 || msg.indexOf('402') !== -1;</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>The policy in this scheme is as follows: 402 = alert to Telegram + <code>StopAndError</code> (retrying without money is pointless); 5xx – retry multiplied by 3 = fail-open: the handle is skipped, the pipeline lives on. TTS failure doesn't kill the reel; it just goes without voice, with a warning in the table.</p><p>The virality formula in the code is not a magic number in the condition but a named constant:</p><pre><code>```javascript
+// Phase 1: average views per handle; views &gt; avg * 2.5 =&gt; tag TRENDING.
+const TREND_MULTIPLIER = 2.5;
+```</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p>Underneath it is a <code>defensive wrapper pickNumber()</code>, which extracts the view count from any API response format.</p><p>A separate gem is the reranker fail-open node. If Qwen3 fails after three retries, all documents are assigned a neutral 0.5 – which the threshold of 0.75 honestly filters out. The pipeline doesn't break: it just quietly skips the round. The comment in the node explicitly acknowledges this: "<code><em>0.5 &lt; MIN_RELEVANCE_SCORE (0.75), so the filter drops them; pipeline stays healthy</em></code>".</p><p><strong><em>Final Binary Merger</em></strong></p><p>HTTP nodes in file mode erase binary data from $input. stealth/ox-alpha itself suggested fetching them directly from the producer nodes, bypassing the current flow:</p><pre><code>function grabBinary(nodeNames, keys) { 
+  for (const n of nodeNames) {
+    try {
+      const bin = ($(n).first() || {}).binary || {};
+      for (const k of keys)
+        if (bin[k] &amp;&amp; (bin[k].data || bin[k].fileName)) return bin[k];
+    } catch (e) {}
+  }
+  return null;
+}
+const vid = grabBinary(['Fetch Video'], ['video_mp4', 'video', 'data']);
+const voi = grabBinary(['PCM to WAV', 'Generate Voice'], ['voice_mp3']);
+const cov = grabBinary(['Download Cover', 'Normalize Cover'], ['cover_png']);</code><div><a href="https://sourcecraft.dev/"><img loading="lazy"/></a></div></pre><p><strong>Where the Model Stumbled and My Own Stumbles</strong></p><p>Without this subsection, the article would probably be in the style of a press release, so here's the shortest list of "ailments" (although, as you understand, there were plenty over 60 million tokens):</p><p><strong><em>Model's Mistakes:</em></strong></p><ul><li><p><code>require(‘crypto’)</code> in the Code node. In n8n, <code>require</code> is not available – I had to force Cline to rewrite it using built-in functions. </p></li><li><p>Google erases binary files. The Google Drive node returns only its JSON, and voice/video were lost after updating the row. The <code>Rebuild Handoff Item</code> node was created to restore the item from the producer nodes. </p></li><li><p>Phantom nodes. A couple of times, the JSON contained <code>type/typeVersion</code> that are not in the current n8n version – I checked manually. </p></li><li><p>Hardcoded <code>IG_USER_ID.</code> The model didn't think to move the <code>ID to credentials</code> – the constant is hardcoded. Okay for testing, but for deployment, it needs to be moved to env.</p></li></ul><p><strong><em>Where I Messed Up Myself (caught only during manual audit): </em></strong></p><ul><li><p>Reranker threshold was off<strong>.</strong> In the documentation sticker, <code>MIN_RELEVANCE_SCORE = 0.75</code>, but in the <code>IF node</code>, it was set to <code>&gt;= 0.4</code> for debugging – and I honestly forgot to change it back. I caught myself on the very same <code><em>"relevant reel every day"</em></code>. Conclusion: the config should live in one place, not separately in the sticker and the node.</p></li><li><p>Video polling 20 times 10s. During peak hours, the queues for <code>Veo/Seedance</code> can be longer – <code>MAX_ATTEMPTS</code> will need to be increased.</p></li></ul><p><strong><em>And now, an example of stumbles/mistakes, and why it's not a failure:</em></strong></p><figure><img alt=" The coolest thing is that the system didn't die silently. I received a neat alert in Telegram with a link to the specific error, and the video draft itself calmly remained in the table. " loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/a83/f3d/71d/a83f3d71dbacc40c82c1771a504a6384.jpg" title=" The coolest thing is that the system didn't die silently. I received a neat alert in Telegram with a link to the specific error, and the video draft itself calmly remained in the table. "/><div><figcaption>The coolest thing is that the system didn't die silently. I received a neat alert in Telegram with a link to the specific error, and the video draft itself calmly remained in the table </figcaption></div></figure><p>Video not generated = draft <strong>not lost</strong>, marked <code>MEDIA_FAILED</code>. Publishing failed = alert with the reason and a link to Drive for manual upload. A minor detail for the observant: Telegram ate the underscores, and the message proudly displays <code>"MEDIAFAILED"</code> – consider it free markdown censorship.</p><p><strong>Real Workflow Run in Numbers: How Much Resource Does It Consume?</strong></p><figure><img alt=" The very moment when I honestly crossed my fingers for all 4 minutes) " loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/888/f58/4ab/888f584abbbcafa3f08eb78a6fb85017.png" title=" The very moment when I honestly crossed my fingers for all 4 minutes) "/><div><figcaption>The very moment when I honestly crossed my fingers for all 4 minutes)</figcaption></div></figure><p>I'll be honest: when I ran this test (expecting at least a crude, cheap generation at the end), I was genuinely crossing my fingers)). Expectations were met: the execution log showed the coveted green status!))) </p><p>For those who run heavy automation, these numbers on the screen are the best part:</p><ul><li><p><strong>Execution Time (4m 13s):</strong> For an end-to-end process involving API video generation (with constant status polling), Gemini voiceover, and custom byte merging, four minutes and change is an excellent result. The main time, of course, is spent waiting for responses from the generation servers. </p></li><li><p><strong>Memory Consumption (8 MB):</strong> The entire run of this massive machine consumed only 8 megabytes. Remember our trick with batching trends in <code>$getWorkflowStaticData('global')</code> instead of bloating the standard context within the loop? This is the main proof that the optimization worked. We are not keeping heavy binaries in n8n's RAM, thanks to which the server feels great and doesn't go into Out of Memory. </p></li></ul><p><strong>And here's the result in the profile</strong></p><figure><img alt='Cover from google/gemini-3.1-flash-image: Cyrillic is readable, the model itself came up with the contrast
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>

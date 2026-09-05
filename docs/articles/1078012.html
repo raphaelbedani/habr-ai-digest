@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choosing a UI tool for rapid prototyping in AI products: Assistant-UI</title>
+  <meta name="description" content="Continuing to explore interface options for working with LLMs in AI product development. In the previous part, we looked at Open WebUI; now, we&#x27;ll move on to Assistant-UI. Read more">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      color: #1f2328;
+    }
+    header {
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    .source {
+      color: #57606a;
+      font-size: 0.95rem;
+    }
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    blockquote {
+      border-left: 4px solid #d0d7de;
+      margin-left: 0;
+      padding-left: 16px;
+      color: #57606a;
+    }
+    footer {
+      border-top: 1px solid #d8dee4;
+      margin-top: 40px;
+      padding-top: 20px;
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Choosing a UI tool for rapid prototyping in AI products: Assistant-UI</h1>
+    <p>Continuing to explore interface options for working with LLMs in AI product development. In the previous part, we looked at Open WebUI; now, we&#x27;ll move on to Assistant-UI. Read more</p>
+    <p class="source">
+      Machine-translated from Habr.
+      <a href="https://habr.com/ru/articles/1078012/?utm_campaign=1078012&amp;utm_source=habrahabr&amp;utm_medium=rss">Read the original Russian article</a>.
+      Sat, 05 Sep 2026 08:11:10 GMT
+    </p>
+  </header>
+  <main>
+<div><p><strong>Continuing to explore interface options for working with LLMs in AI product development. In the previous part, we looked at Open WebUI; now, we'll move on to Assistant-UI.</strong></p><h2>Assistant-UI</h2><p>We set aside Open WebUI and turned to the <strong>Assistant-UI</strong> framework.</p><p>Assistant-UI is an open-source TypeScript/React library for building customizable AI-powered chatbot interfaces.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/2f3/79d/88a/2f379d88aa6ec179c50f0b639f8fb414.png"/></figure><p>Unlike Open WebUI, this is a set of frontend tools from which you can assemble an interface for your specific task. The library is designed for creating AI chats: it can display responses as they are generated, correctly handle interruptions and retries, support long multi-step dialogues, and integrate with various backend solutions, including custom APIs and LangGraph.</p><p><strong>Advantages of Assistant-UI:</strong></p><p><strong>1) Full Customization.</strong> Since it's a library, the appearance can be changed as desired, and your own components can be written and implemented. If you encounter difficulties, you can refer to project examples on GitHub.</p><figure><img alt="example of reasoning" loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/78e/5e4/807/78e5e480783097bceff993d60e5a7558.png" title="example of reasoning"/><div><figcaption>example of reasoning</figcaption></div></figure><figure><img alt="example of a board" loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/7a3/4d7/6c3/7a34d76c37feb25b05807a7363119f5a.png" title="example of a board"/><div><figcaption>example of a board</figcaption></div></figure><p><strong>2) Integration with LangGraph.</strong> Assistant-UI supports the LangGraph template (a template for integration with the framework used for the graphical representation of the "Idea Bank"). This provides out-of-the-box support for streaming agent state updates, not just response text, allowing for accurate reflection of task progress in the interface. Mechanisms like human-in-the-loop and generative UI are available out of the box.</p><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/28c/7f5/ead/28c7f5ead7c369ed8ed072b7faaa24f3.png"/></figure><p><strong>3) Catalog of ready-made UI components (tool-ui).</strong> Over 20 tools for direct user interaction: from tables and checklists to command lines and progress trackers.</p><figure><img alt="example of Plan tool" loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/b9f/405/fe7/b9f405fe7dad25aab77cf774856881a8.png" title="example of Plan tool"/><div><figcaption>example of Plan tool</figcaption></div></figure><figure><img loading="lazy" src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/c2c/858/ebc/c2c858ebcfc931752b5839bdd0c3b293.png"/></figure><p><strong>Disadvantages of Assistant-UI:</strong></p><ul><li><p><strong>Higher entry barrier.</strong> Requires knowledge of React.</p></li><li><p><strong>Time and effort.</strong> The UI needs to be written and assembled, which affects MVP timelines.</p></li><li><p><strong>Some functionality requires manual refinement.</strong> For example, document handling, which was out-of-the-box in Open WebUI.</p></li></ul><h2>What we gained with Assistant-UI</h2><p>In our case, Assistant-UI proved to be a more convenient and suitable tool:</p><ul><li><p><strong>Custom Components.</strong> We integrated the necessary visualization of the idea development process into the product. It's convenient, clear, and close to the real-life process – this is how people in the team collaborate on a new topic.</p></li><li><p><strong>Integration with LangGraph.</strong> Support within the framework allowed us to avoid special workarounds during development. The workflow is architecturally represented within the product as graphs for different stages with possible route changes.</p></li><li><p><strong>Organic human-in-the-loop.</strong> Each agent, at the right moment, prompts the user with full context.</p></li></ul><h2>Which choice and for which scenarios</h2><p><strong>Open WebUI</strong> is an open-source web interface, convenient when you <strong>don't want to write code</strong> and need a simple, familiar chatbot. It can be integrated quickly, but customization will require significant effort. Thus, it's a good choice for a quick start when you need a ready-made self-hosted AI product and user interaction is a standard chatbot experience.</p><p><strong>Assistant-UI</strong> is a framework that provides <strong>complete freedom of action</strong>. It's suitable for more creative tasks. It takes time to write the foundation, but integrating ready-made tools is facilitated by examples from GitHub. It requires at least a basic understanding of React but offers control over state, streaming updates, tool calling, human-in-the-loop, custom UI components, and direct integration with agent backends like LangGraph.</p><h2>Where such choices are encountered</h2><p>The described selection logic is useful not only for the "Idea Bank." It is applicable to many corporate AI solutions:</p><ul><li><p>internal AI assistants for employees;</p></li><li><p>AI modules in CRM, ERP, Service Desk, and industry-specific systems;</p></li><li><p>services for processing requests, documents, and inquiries;</p></li><li><p>multi-agent solutions for analytics, hypothesis testing, and recommendation generation;</p></li><li><p>interfaces where AI must not only respond but also guide the user through a process.</p></li></ul><p>In all these cases, the "chat" is often just the top level of interaction. Beneath it lies the corporate flow, state management, agent control, checks, approvals, and domain logic. This is precisely why such products require an interface layer that can coexist with this logic.</p><h2>Conclusion</h2><p>When developing AI products, the choice of a frontend tool cannot be reduced to the convenience of a ready-made chat or the speed of the initial launch. In projects with multi-agent logic, human-in-the-loop, and non-standard interface entities, the UI becomes part of the product's architecture.</p><ul><li><p><strong>Open WebUI</strong> is a strong tool for a quick start when a ready-made universal AI interface is needed.</p></li><li><p><strong>Assistant-UI</strong> is a more flexible path when you need to embed AI into a specific business scenario and maintain freedom in interface design.</p></li></ul><p>For us, this meant a simple choice: if the goal is just to show a chat, you can take a ready-made platform. If the goal is to show how an AI service will actually work within a product and business process, you need a tool that allows you to design your own UX around the system's logic. In our case, that tool was Assistant-UI.</p><p>Have you faced the choice of a UI tool for AI products? Which approach did you choose – a ready-made platform or a flexible framework?</p></div>
+  </main>
+  <footer>
+    Translation generated with Gemini 2.5 Flash-Lite.
+    The original article remains the source of record.
+  </footer>
+</body>
+</html>
